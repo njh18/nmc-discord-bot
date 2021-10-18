@@ -29,8 +29,14 @@ def get_quote():
 
 	response = requests.request("POST", url, headers=headers, data=payload)
 	json_data = json.loads(response.text)
-	total_results = json_data["data"]["axies"]["total"]
-	return total_results
+
+	msg = ""
+	count = 1
+	for axie in json_data["data"]["axies"]["results"]:
+		theString = "%d. Price: %.4f ETH / US$ %.2f Link: https://marketplace.axieinfinity.com/axie/%s/" %(count,float(axie["auction"]["currentPrice"][0:-14])/10000, float(axie["auction"]["currentPriceUSD"]),axie['id'])
+		msg = msg + theString + "\n"
+		count +=1
+	return msg
 
 
 def update_presets(payload):
@@ -51,7 +57,7 @@ async def on_message(message):
 	if message.author == client.user:
 		return
 	
-	if msg.startswith('$get-axie'):
+	if msg.startswith('$floor-axies'):
 		quote = get_quote()
 		await message.channel.send(quote)
 
