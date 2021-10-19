@@ -2,7 +2,7 @@ import os
 import json
 import requests
 
-def getFloorAxies():
+def getFloorAxiePrice():
 	url = os.environ["GRAPHQL"]
 
 	f = open('GetAxieBriefList.json')

@@ -32,4 +32,4 @@ def criteriaBuilder(url):
         elif item[0] in ["pureness","breedCount","hp","skill","speed","morale"]:
             baseCriteria[item[0]].append(int(item[1]))
 
-    return json.dumps(baseCriteria)
+    return baseCriteria
