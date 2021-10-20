@@ -25,7 +25,7 @@ Can refer to **Database Schema.json** for an example
 
 # Functions Needed
 
-## Ronin & SLP related
+### Ronin & SLP related
 
 1.	Add new ronin ID under a Manager into Database
 
@@ -41,7 +41,7 @@ Can refer to **Database Schema.json** for an example
 
 5. Get total SLP for all scholars under MNC
 
-## Filter & Axie Price related
+### Filter & Axie Price related
 
 1. Add criteria into Database
 
@@ -54,3 +54,5 @@ Can refer to **Database Schema.json** for an example
 4. Edit/Delete criteria
 
 5. Get prices for all criterias 
+
+6. Given a List of Axie IDs, get back the query

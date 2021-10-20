@@ -5,6 +5,7 @@ from getFloorAxiePrice import getFloorAxiePrice
 from getAxiePrice import getAxiePrice
 from criteriaBuilder import criteriaBuilder
 from getTokenPrice import getSLPPrice, getAXSPrice
+from urlBuilder import urlBuilder
 
 client = discord.Client();
 bot_token = os.environ['TOKEN']
@@ -32,6 +33,17 @@ async def on_message(message):
 			url = msg.split("$search ",1)[1]
 			quote = getAxiePrice(criteriaBuilder(url))
 			await message.channel.send(quote)
+		except IndexError:
+			await message.channel.send("No Input given!")
+
+	elif msg.startswith("$getAxieSearchUrl"):
+		try:
+			theString = msg.split("$getAxieSearchUrl ",1)[1]
+			axieList = theString.split(",")
+			sentMsg = ""
+			for axieId in axieList:
+				sentMsg = sentMsg + urlBuilder(axieId) + "\n"
+			await message.channel.send(sentMsg)
 		except IndexError:
 			await message.channel.send("No Input given!")
 
