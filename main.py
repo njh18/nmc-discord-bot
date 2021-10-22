@@ -1,14 +1,27 @@
 import os
 import discord
+import json
 from replit import db
 from getFloorAxiePrice import getFloorAxiePrice
 from getAxiePrice import getAxiePrice
 from criteriaBuilder import criteriaBuilder
 from getTokenPrice import getSLPPrice, getAXSPrice
 from urlBuilder import urlBuilder
+from getDailySLP import getDailySLP
 
 client = discord.Client();
 bot_token = os.environ['TOKEN']
+
+## initialise database
+# roninDb = json.load(open("Database-ronin.json"))
+# db["roninAdd"] = roninDb["roninAdd"]
+# for key in db["roninAdd"]:
+# 	print(key)
+# 	print(db["roninAdd"][key])
+
+
+
+
 
 # when bot is ready to be use
 @client.event
@@ -79,6 +92,9 @@ async def on_message(message):
 		await message.channel.send(output_msg)
   
   #Get SLP from 
+	elif msg.startswith("$slp"):
+		roninAdd = msg.split("$slp ",1)[1]
+		await message.channel.send(embed=getDailySLP(roninAdd))
 '''
 	elif msg.startswith("$slp"):
 		ronin_id = msg.split("$slp ",1)[1]

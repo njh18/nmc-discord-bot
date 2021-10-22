@@ -1,0 +1,48 @@
+{
+	"roninAdd": {
+		"LaraTale":[
+					{
+						"managerShare": "100",
+						"eth": "ronin:e5fc4789704b538ebd28f21d2f6f2d5853d04761",
+						"name": "Me",
+						"scholarPayoutAddress": "",
+						"investorPercentage": "",
+						"investorRonin": ""
+					},
+					{
+						"managerShare": "45",
+						"eth": "ronin:e7866f334665667aefec917b6c0b72b9eef95338",
+						"name": "Ryuji",
+						"scholarPayoutAddress": "",
+						"investorPercentage": "",
+						"investorRonin": ""
+					},
+					{
+						"managerShare": "45",
+						"eth": "ronin:3b3f3c9888347621aa74e0bfb22fb16e034abaae",
+						"name": "Sungjiewoo",
+						"scholarPayoutAddress": "",
+						"investorPercentage": "",
+						"investorRonin": ""
+					},
+					{
+						"managerShare": "45",
+						"eth": "ronin:5d5fc75fe86f842a3e1783c5166329b0da67f942",
+						"name": "ligsucab",
+						"scholarPayoutAddress": "",
+						"investorPercentage": "",
+						"investorRonin": ""
+					},
+					{
+						"managerShare": "45",
+						"eth": "ronin:b1e21db18428c377c9a71fadc36f616b6e98a60a",
+						"name": "Raul",
+						"scholarPayoutAddress": "",
+						"investorPercentage": "",
+						"investorRonin": ""
+					}],
+		"kopimuji": [],
+		"Nephy":[],
+		"HaoS":[]
+	}
+}
