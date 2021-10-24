@@ -2,22 +2,11 @@ import requests
 import os
 import json
 import discord
+from getUpdateRapidApi import getUpdateRapidApi
 
 def getDailySLP(roninAdd):
-
-	roninAdd = roninAdd.replace("ronin:","0x")
-	print(roninAdd)
-	url = "https://axie-infinity.p.rapidapi.com/get-update/" + roninAdd +"?id=" + roninAdd
-
-	payload={}
-	headers = {
-		'x-rapidapi-host': 'axie-infinity.p.rapidapi.com',
-		'x-rapidapi-key': os.environ['x-rapidapi-key']
-	}
-
-	response = requests.request("GET", url, headers=headers, data=payload)
-
-	json_data = json.loads(response.text)
+	
+	json_data = json.loads(getUpdateRapidApi(roninAdd))
 
 	thename = json_data['leaderboard']['name']
 

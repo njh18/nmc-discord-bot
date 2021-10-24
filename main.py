@@ -21,8 +21,6 @@ bot_token = os.environ['TOKEN']
 
 
 
-
-
 # when bot is ready to be use
 @client.event
 async def on_ready():
