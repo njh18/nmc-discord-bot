@@ -1,0 +1,16 @@
+{
+  "filters": {
+    "anemone": {
+      "classes": ["Aquatic"],
+      "parts": ["back-anemone", "mouth-piranha",  "mouth-risky-fish", "mouth-lam", "horn-anemone", "tail-nimo"],
+      "pureness": [],
+      "numMystic": [],
+      "stages": [],
+      "breedCount": [],
+      "speed": [57, 61],
+      "hp": [45, 61],
+      "skill": [35, 61],
+      "morale": [27, 61]
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import os
 import discord
 import json
+import aiocron
 from replit import db
 from getFloorAxiePrice import getFloorAxiePrice
 from getAxiePrice import getAxiePrice
@@ -9,30 +10,52 @@ from getTokenPrice import getSLPPrice, getAXSPrice
 from urlBuilder import urlBuilder
 from getDailySLP import getDailySLP
 
+
 client = discord.Client();
 bot_token = os.environ['TOKEN']
 
-## initialise database
-# roninDb = json.load(open("Database-ronin.json"))
-# db["roninAdd"] = roninDb["roninAdd"]
-# for key in db["roninAdd"]:
-# 	print(key)
-# 	print(db["roninAdd"][key])
+
+# # initialise database
+roninDb = json.load(open("Database-ronin.json"))
+filtersDb = json.load(open("Database-filters.json"))
+db.set_bulk({"roninAdd":roninDb["roninAdd"],"filters":filtersDb["filters"]})
 
 
+## Bot-testing channel ID
+## use https://crontab.guru/ to 
+CHANNEL_ID = 899694611541409835
+@aiocron.crontab('*/10 * * * *')
+async def cornjob1():
+    channel = client.get_channel(CHANNEL_ID)
+    await channel.send('This message is sent every 10 minutes')
+
+# will be used for ronin 
+ADMIN_CHANNEL_ID = os.environ["ADMIN_CHANNEL_ID"]
+# “At 00:00.”
+# @aiocron.crontab('0 0 * * *')
+# async def cornjob2():
+#     channel = client.get_channel(ADMIN_CHANNEL_ID)
+#     await channel.send('This message is sent every 10 minutes')
 
 # when bot is ready to be use
 @client.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
 
-
+# Main Function -> When someone sends a message
 @client.event
 async def on_message(message):
 	if message.author == client.user:
 		return
   
 	msg = message.content
+  # switch msg:
+  #   case msg.startswith('$floor-axies'): 	
+  #     # quote = getFloorAxiePrice()
+  #     # await message.channel.send(quote)
+  #     return 'hello'
+  #     break
+
 
 	# Get the floor-axie prices
 	if msg.startswith('$floor-axies'):
@@ -58,11 +81,18 @@ async def on_message(message):
 		except IndexError:
 			await message.channel.send("No Input given!")
 
+	elif msg.startswith("$buildprice"):
+			buildName = msg.split("$buildprice ",1)[1]
+			msg = getAxiePrice(json.loads(db.get_raw("filters"))[buildName])
+			await message.channel.send(msg)
+
+
+
 	elif msg.startswith('$hashira'):
 		await message.channel.send('https://tenor.com/view/demon-slayer-movie-rengoku-sword-anime-gif-15690515')
   
 	elif msg.startswith('$rengokusan'):
-		await message.channel.send('diam la nephy')
+		await message.channel.send('diam la kopimuji is chandra doxxed')
 
   #Get SLP market price
 	elif msg.startswith("$priceslp"):

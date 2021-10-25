@@ -2,6 +2,10 @@ import json
 
 
 # This function is used to build the criteria json file for the graphql endpoint
+
+# Input : url
+# output : criteria/filter in JSON format
+
 def criteriaBuilder(url):
     baseUrl= "https://marketplace.axieinfinity.com/axie/?"
     baseCriteria = {

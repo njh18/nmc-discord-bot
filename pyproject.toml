@@ -9,6 +9,7 @@ python = "^3.8"
 discord = "^1.7.3"
 replit = "^3.2.4"
 pycoingecko = "^2.2.0"
+aiocron = "^1.7"
 
 [tool.poetry.dev-dependencies]
 
