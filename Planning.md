@@ -25,6 +25,12 @@ Can refer to **Database Schema.json** for an example
 
 # Functions Needed
 
+### ️⚠️️ ️High Priority ⚠️
+
+Anyone that is not admin calls $hashira, return message :
+
+  * You are not a Hashira. Kindly try again in 1000 years.
+
 ### Ronin & SLP related
 
 1.	Add new ronin ID under a Manager into Database
@@ -40,6 +46,8 @@ Can refer to **Database Schema.json** for an example
 4. Get total SLP for scholars under 1 Manager
 
 5. Get total SLP for all scholars under MNC
+
+6. Schedule : NMC Scholar Arena Leaderboard
 
 ### Filter & Axie Price related
 

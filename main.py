@@ -9,7 +9,7 @@ from criteriaBuilder import criteriaBuilder
 from getTokenPrice import getSLPPrice, getAXSPrice
 from urlBuilder import urlBuilder
 from getDailySLP import getDailySLP
-
+from getClanSLP import getClanSLP
 
 client = discord.Client();
 bot_token = os.environ['TOKEN']
@@ -27,15 +27,18 @@ CHANNEL_ID = 899694611541409835
 @aiocron.crontab('*/10 * * * *')
 async def cornjob1():
     channel = client.get_channel(CHANNEL_ID)
-    await channel.send('This message is sent every 10 minutes')
+    # await channel.send('This message is sent every 10 minutes')
 
 # will be used for ronin 
 ADMIN_CHANNEL_ID = os.environ["ADMIN_CHANNEL_ID"]
 # “At 00:00.”
-# @aiocron.crontab('0 0 * * *')
-# async def cornjob2():
-#     channel = client.get_channel(ADMIN_CHANNEL_ID)
-#     await channel.send('This message is sent every 10 minutes')
+## NOTE: CANNOT GO TO ADMIN, I THINK NEED ADMIN RIGHTS
+@aiocron.crontab('20 16 * * *')
+async def cornjob2():
+		for clan in json.loads(db.get_raw("roninAdd")):
+			channel = client.get_channel(899694611541409835)
+			await channel.send(embed = getClanSLP(clan))
+
 
 # when bot is ready to be use
 @client.event
@@ -87,9 +90,11 @@ async def on_message(message):
 			await message.channel.send(msg)
 
 
-
 	elif msg.startswith('$hashira'):
-		await message.channel.send('https://tenor.com/view/demon-slayer-movie-rengoku-sword-anime-gif-15690515')
+		if(message.author.top_role.permissions.administrator):
+			await message.channel.send('https://tenor.com/view/demon-slayer-movie-rengoku-sword-anime-gif-15690515')
+		else:
+			await message.channel.send('You are not a Hashira. Try again in 10,000 years.')
   
 	elif msg.startswith('$rengokusan'):
 		await message.channel.send('diam la kopimuji is chandra doxxed')
@@ -118,11 +123,22 @@ async def on_message(message):
 			output_msg += "\n{amt} AXS = US$ {usd_amt:,.2f} | Php {php_amt:,.2f}".format(amt = amt, usd_amt = usd_amt, php_amt = php_amt)
 		await message.channel.send(file=discord.File('images/axs_50.png'))
 		await message.channel.send(output_msg)
-  
+
   #Get SLP from 
 	elif msg.startswith("$slp"):
 		roninAdd = msg.split("$slp ",1)[1]
 		await message.channel.send(embed=getDailySLP(roninAdd))
+
+
+	# Test function
+	elif msg.startswith("$test"):
+		for clan in json.loads(db.get_raw("roninAdd")):
+			await message.channel.send(embed = getClanSLP(clan))
+
+
+
+
+	
 '''
 	elif msg.startswith("$slp"):
 		ronin_id = msg.split("$slp ",1)[1]
