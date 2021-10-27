@@ -1,6 +1,5 @@
 import json
 
-
 # This function is used to build the criteria json file for the graphql endpoint
 
 # Input : url

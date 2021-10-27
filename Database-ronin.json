@@ -2,6 +2,7 @@
   "roninAdd": {
     "Oasis": [
       {
+        "userId" : 369284917084815360,
         "managerShare": 0,
         "eth": "ronin:21ed32863b853bad5a8640edf118ea1833e665df",
         "name": "HaoSNFT",
@@ -10,6 +11,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 0,
         "managerShare": 5,
         "eth": "ronin:ed18da2b35c9a302f2b67881af3bcb6221522e28",
         "name": "Lionel Chan ",
@@ -18,6 +20,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 0,
         "managerShare": 5,
         "eth": "ronin:f26150b7c04856bb42cb0964e3795299b3c0b93a",
         "name": "Alvin John",
@@ -26,6 +29,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 558962011975974934,
         "managerShare": 5,
         "eth": "ronin:02bef2267d872f83466afcc6cdf51f7a55b83b32",
         "name": "Jester-b",
@@ -34,6 +38,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 724967215602073610,
         "managerShare": 5,
         "eth": "ronin:58e57e2b70520b45a8fdd2a8026061ed947d97f7",
         "name": "Tricia Faye",
@@ -42,6 +47,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 0,
         "managerShare": 5,
         "eth": "ronin:9353b1a718d47a9ccf5e1d3ef553e112ce7cf73e",
         "name": "Joshua Aaron",
@@ -51,6 +57,7 @@
       },
 
       {
+        "userId" : 0,
         "managerShare": 5,
         "eth": "ronin:c6b658a4065c69cb5663cdaf630f4c774c6af3c3",
         "name": "Harold Ivan",
@@ -59,6 +66,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 0,
         "managerShare": 5,
         "eth": "ronin:f02afe26da96c68dcb9235a74d92462f653a72ce",
         "name": "Jelo Sandoval",
@@ -67,6 +75,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 0,
         "managerShare": 5,
         "eth": "ronin:b0e8d4f8415ba1bca012fc702a365d6f1d35ef8d",
         "name": "Adrian Vince",
@@ -75,6 +84,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 0,
         "managerShare": 5,
         "eth": "ronin:7a7e0f398a52b731972feed489802859a6deb6b8",
         "name": "Adrian Mark",
@@ -85,6 +95,7 @@
     ],
     "Lunar": [
       {
+        "userId" : 398128279715840002,
         "managerShare": 0,
         "eth": "ronin:c841df9a10676269335864da9a7392240e535510",
         "name": "Nephy",
@@ -93,6 +104,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 694130150236749864,
         "managerShare": 5,
         "eth": "ronin:e06d4be93c8742e4fe7d8e1e7e3e6180c50f1087",
         "name": "jingyi",
@@ -101,6 +113,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 772847165550755900,
         "managerShare": 5,
         "eth": "ronin:400681fd9b272bced9c8026d2df11bda53938906",
         "name": "pomonto",
@@ -109,6 +122,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 878819009129242664,
         "managerShare": 5,
         "eth": "ronin:be7c1981f8758bb64451217cd15d8ed65c54604b",
         "name": "ngiloka",
@@ -118,6 +132,7 @@
       },
 
       {
+        "userId" : 878915741653544980,
         "managerShare": 5,
         "eth": "ronin:bac69f448fcf6f56e258a36206bbed3c78302964",
         "name": "marvscas",
@@ -127,6 +142,7 @@
       },
 
       {
+        "userId" : 765911424747700244,
         "managerShare": 5,
         "eth": "ronin:9309153675710eec1532d7f42ed2585e7e9a29d4",
         "name": "sieji",
@@ -135,6 +151,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 856181512088846337,
         "managerShare": 5,
         "eth": "ronin:9ef5f046ff56d0ffbc4890eb1663e93b11ffff9b",
         "name": "flapet",
@@ -143,6 +160,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 584553441074872342,
         "managerShare": 5,
         "eth": "ronin:9fa781e2faac91dbb0824e3dbca3203714a8e3aa",
         "name": "aniK",
@@ -151,6 +169,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 765935687874379826,
         "managerShare": 5,
         "eth": "ronin:0244a62e5f36e335dae94e8c91d4ad008c02a0fc",
         "name": "Keyaru",
@@ -159,6 +178,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 802004367497887764,
         "managerShare": 5,
         "eth": "ronin:5a6e613d000fb9690af20e91fd2c5f43cf856379",
         "name": "Azazel",
@@ -167,6 +187,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 130482330161643520,
         "managerShare": 5,
         "eth": "ronin:80ecd138f825853bc7c46457bdb96de9f137d5db",
         "name": "Laxus",
@@ -175,6 +196,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 769178003044696064,
         "managerShare": 5,
         "eth": "ronin:0b519f024af7e72aba45e51bbf4bb040fb22ef0e",
         "name": "owemji",
@@ -183,6 +205,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 878765673617195029,
         "managerShare": 5,
         "eth": "ronin:151cbac5625696ae05f4974f8a5445427d4e5bb5",
         "name": "dharyl",
@@ -192,6 +215,7 @@
       },
 
       {
+        "userId" : 789023396733255680,
         "managerShare": 5,
         "eth": "ronin:ef378c31ca4a6f4f68dc3ff9f4f1b106b23309c9",
         "name": "weiwei",
@@ -202,6 +226,7 @@
     ],
     "Kopi": [
       {
+        "userId" : 890247693618794569,
         "managerShare": 5,
         "eth": "ronin:ccc3a5045571d0393728cf8c9b7f6769bcbafdff",
         "name": "Yonin",
@@ -210,6 +235,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 873689683572441118,
         "managerShare": 5,
         "eth": "ronin:ffbe448de83df6cf60a3c79cd293a88bf174849b",
         "name": "Franz Itum",
@@ -218,6 +244,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 882259490056077464,
         "managerShare": 5,
         "eth": "ronin:cdee95a058572f4c64badcaaccfa447abcd43cb7",
         "name": "UnGoodyi",
@@ -227,6 +254,7 @@
       },
 
       {
+        "userId" : 299790174626381825,
         "managerShare": 0,
         "eth": "ronin:e2263bcd8d841ee543a08017d029b2851bab2778",
         "name": "kopimuji",
@@ -235,9 +263,19 @@
         "investorRonin": ""
       },
       {
+        "userId" : 733248698112278569,
         "managerShare": 5,
         "eth": "ronin:63895b6cd10009f8cf34c468d47a245ec9aa1b24",
         "name": "King",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+      {
+        "userId" : 693099036751822860,
+        "managerShare": 0,
+        "eth": "ronin:2a4f5b0e51d6868fc2efc78dc03658c4aad9453a",
+        "name": "Neonzea",
         "scholarPayoutAddress": "",
         "investorPercentage": "",
         "investorRonin": ""
@@ -245,6 +283,7 @@
     ],
     "Sol": [
       {
+        "userId" : 886675179168727091,
         "managerShare": 5,
         "eth": "ronin:e7866f334665667aefec917b6c0b72b9eef95338",
         "name": "Ryuji",
@@ -254,6 +293,7 @@
       },
 
       {
+        "userId" : 894467093636980757,
         "managerShare": 5,
         "eth": "ronin:5d5fc75fe86f842a3e1783c5166329b0da67f942",
         "name": "Ligsucab",
@@ -262,6 +302,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 279991443609616386,
         "managerShare": 0,
         "eth": "ronin:e5fc4789704b538ebd28f21d2f6f2d5853d04761",
         "name": "JunHao",
@@ -270,6 +311,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 894599668783255662,
         "managerShare": 5,
         "eth": "ronin:b1e21db18428c377c9a71fadc36f616b6e98a60a",
         "name": "Raul",
@@ -278,6 +320,7 @@
         "investorRonin": ""
       },
       {
+        "userId" : 768404786298748938,
         "managerShare": 5,
         "eth": "ronin:3b3f3c9888347621aa74e0bfb22fb16e034abaae",
         "name": "Sungjie",

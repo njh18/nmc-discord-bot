@@ -15,28 +15,34 @@ client = discord.Client();
 bot_token = os.environ['TOKEN']
 
 
-# # initialise database
+# initialise database (Only need to do it once if you change the file)
 roninDb = json.load(open("Database-ronin.json"))
 filtersDb = json.load(open("Database-filters.json"))
-db.set_bulk({"roninAdd":roninDb["roninAdd"],"filters":filtersDb["filters"]})
+pricesDb = json.load(open("Database-prices.json"))
+db.set_bulk({"roninAdd":roninDb["roninAdd"],"filters":filtersDb["filters"],"prices":pricesDb["prices"]})
 
 
 ## Bot-testing channel ID
 ## use https://crontab.guru/ to 
-CHANNEL_ID = 899694611541409835
-@aiocron.crontab('*/10 * * * *')
-async def cornjob1():
-    channel = client.get_channel(CHANNEL_ID)
+@aiocron.crontab('*/30 * * * *')
+async def cronjob1():
+		print("Running cronjob1")
+		channel = client.get_channel(902556837445009448)
+		for key in db["filters"]:
+				msg = getAxiePrice(key)
+				await channel.send(embed = msg)
     # await channel.send('This message is sent every 10 minutes')
 
 # will be used for ronin 
 ADMIN_CHANNEL_ID = os.environ["ADMIN_CHANNEL_ID"]
 # “At 00:00.”
 ## NOTE: CANNOT GO TO ADMIN, I THINK NEED ADMIN RIGHTS
-@aiocron.crontab('20 16 * * *')
+CHANNEL_ID = 899694611541409835
+@aiocron.crontab('00 16 * * *')
 async def cornjob2():
+		print("Running cronjob2")
 		for clan in json.loads(db.get_raw("roninAdd")):
-			channel = client.get_channel(899694611541409835)
+			channel = client.get_channel(CHANNEL_ID)
 			await channel.send(embed = getClanSLP(clan))
 
 
@@ -52,27 +58,19 @@ async def on_message(message):
 		return
   
 	msg = message.content
-  # switch msg:
-  #   case msg.startswith('$floor-axies'): 	
-  #     # quote = getFloorAxiePrice()
-  #     # await message.channel.send(quote)
-  #     return 'hello'
-  #     break
-
 
 	# Get the floor-axie prices
 	if msg.startswith('$floor-axies'):
 		quote = getFloorAxiePrice()
 		await message.channel.send(quote)
 
-	elif msg.startswith('$search'):
-		try:
-			url = msg.split("$search ",1)[1]
-			quote = getAxiePrice(criteriaBuilder(url))
-			await message.channel.send(quote)
-		except IndexError:
-			await message.channel.send("No Input given!")
 
+	elif msg.startswith('$test'):
+			for key in db["filters"]:
+				msg = getAxiePrice(key)
+				await message.channel.send(embed = msg)
+
+	# Maybe can remove
 	elif msg.startswith("$getAxieSearchUrl"):
 		try:
 			theString = msg.split("$getAxieSearchUrl ",1)[1]
@@ -89,15 +87,14 @@ async def on_message(message):
 			msg = getAxiePrice(json.loads(db.get_raw("filters"))[buildName])
 			await message.channel.send(msg)
 
-
 	elif msg.startswith('$hashira'):
 		if(message.author.top_role.permissions.administrator):
 			await message.channel.send('https://tenor.com/view/demon-slayer-movie-rengoku-sword-anime-gif-15690515')
 		else:
 			await message.channel.send('You are not a Hashira. Try again in 10,000 years.')
   
-	elif msg.startswith('$rengokusan'):
-		await message.channel.send('diam la kopimuji is chandra doxxed')
+	elif msg.startswith('$nezuko'):
+		await message.channel.send('https://tenor.com/view/nezuko-gif-21668450')
 
   #Get SLP market price
 	elif msg.startswith("$priceslp"):
@@ -124,20 +121,51 @@ async def on_message(message):
 		await message.channel.send(file=discord.File('images/axs_50.png'))
 		await message.channel.send(output_msg)
 
-  #Get SLP from 
+  #Get SLP from current 
 	elif msg.startswith("$slp"):
 		roninAdd = msg.split("$slp ",1)[1]
 		await message.channel.send(embed=getDailySLP(roninAdd))
 
+	elif msg.startswith("$myslp"):
+		ronin=0
+		clans = ['Oasis', 'Kopi', 'Lunar', 'Sol']
+		if(len(msg.split(" ",1))==1):
+			for clan in clans:
+				# print(clan)
+				for user in db["roninAdd"][clan]:
+					userId = user["userId"]
+					if(userId==message.author.id):
+						ronin = user["eth"]
+			await message.channel.send(embed = getDailySLP(ronin))
+		else:
+			if(message.author.top_role.permissions.administrator):
+				print('tag')
+				mention = msg.split("$myslp ",1)[1]
+				print(mention)
+				userid = int(mention[3:-1])
+				print(userid)
+				for clan in clans:
+					for user in db["roninAdd"][clan]:
+						userId = user["userId"]
+						if(userId==userid):
+							ronin = user["eth"]
+				await message.channel.send(embed = getDailySLP(ronin))
+			else:
+				await message.channel.send("Mind your own business.")
+  	#await message.channel.send(client.get_user(roninAdd))
+  	# await message.channel.send(embed=getDailySLP(roninAdd))
 
-	# Test function
-	elif msg.startswith("$test"):
-		for clan in json.loads(db.get_raw("roninAdd")):
-			await message.channel.send(embed = getClanSLP(clan))
+	#Get SLP for entire Clan
+	elif msg.startswith("$clanslp"):
+		clan = msg.split("$clanslp ",1)[1]
+		await message.channel.send(embed = getClanSLP(clan))
+
+client.run(bot_token)
 
 
-
-
+'''
+	LEGACY CODE
+'''
 	
 '''
 	elif msg.startswith("$slp"):
@@ -146,5 +174,22 @@ async def on_message(message):
 		await message.channel.send("For ronin id "+str(client_id)+", your total slp is "+str(slp_total)+"! Congrats!")
 '''
 
-client.run(bot_token)
+'''
+	elif msg.startswith('$search'):
+		try:
+			url = msg.split("$search ",1)[1]
+			quote = getAxiePrice(criteriaBuilder(url))
+			await message.channel.send(quote)
+		except IndexError:
+			await message.channel.send("No Input given!")
+'''
 
+'''
+  # switch msg:
+  #   case msg.startswith('$floor-axies'): 	
+  #     # quote = getFloorAxiePrice()
+  #     # await message.channel.send(quote)
+  #     return 'hello'
+  #     break
+
+'''

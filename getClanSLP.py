@@ -15,7 +15,9 @@ def getClanSLP(clan):
 		color = discord.Color.dark_purple()
 	elif clan == "Sol":
 		color = discord.Color.red()
-
+	else:
+		color = discord.Color.light_gray()
+		
 	embed = discord.Embed(title = clan +  " clan's Daily Updates", color = color)
 
 	roninAddDb = json.loads(db.get_raw("roninAdd"))[clan]

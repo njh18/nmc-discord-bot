@@ -37,3 +37,20 @@ def urlBuilder(axieId):
 
     
         return baseUrl[:-1]
+
+
+def urlToCriteria(criteria):
+	  #   baseCriteria = {
+    #     "classes": [],
+    #     "parts": [],
+    #     "pureness": [],
+    #     "numMystic": [],
+    #     "stages": [],
+    #     "breedCount": [],
+    #     "speed": [],
+    #     "hp": [],
+    #     "skill": [],
+    #     "morale":[]	
+    # }
+
+	return
