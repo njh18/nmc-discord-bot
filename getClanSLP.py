@@ -2,6 +2,7 @@ import requests
 import os
 import json
 import discord
+from roninAddConverter import roninAddConverter
 from replit import db
 
 def getClanSLP(clan):
@@ -23,7 +24,8 @@ def getClanSLP(clan):
 	roninAddDb = json.loads(db.get_raw("roninAdd"))[clan]
 
 	for user in roninAddDb:
-		roninAdd = user["eth"].replace("ronin:","0x")
+    #get 0x
+		roninAdd = roninAddConverter(user["eth"]) 
 		url = "https://axie-infinity.p.rapidapi.com/get-update/" + roninAdd +"?id=" + roninAdd
 
 		payload={}

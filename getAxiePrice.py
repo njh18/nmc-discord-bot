@@ -41,14 +41,10 @@ def getAxiePrice(buildName):
 			totalCostEth += float(axie["auction"]["currentPrice"][0:-14])/10000
 			totalCostUsd += float(axie["auction"]["currentPriceUSD"])
 
-		# now = datetime.now()
-		# theList = db["prices"][buildName].value
-		# print(theList)
-		# theList.append([now,totalCostEth/count,totalCostUsd/count])
-		# print(theList)
-		# db["prices"][buildName] = (theList)
-		# print(db["prices"])
-		
+		# add data into database
+		now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+		db["prices"][buildName].append([now,totalCostEth/count,totalCostUsd/count])
+		print(db["prices"])
 		return embed
 
 

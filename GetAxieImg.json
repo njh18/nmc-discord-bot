@@ -1,7 +1,0 @@
-{
-  "operationName": "GetAxieDetail",
-  "variables": {
-    "axieId": ""
-  },
-  "query": "query GetAxieDetail($axieId: ID!) {\n  axie(axieId: $axieId) {\n    image\n }\n}\n"
-}
