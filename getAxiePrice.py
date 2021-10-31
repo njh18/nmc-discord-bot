@@ -28,23 +28,24 @@ def getAxiePrice(buildName):
 		
 		url = filterData[buildName]["url"]
 
-		embed = discord.Embed(title ="The current prices for " + buildName + " build are: (Click Here to go to 	marketplace\n\n", url = url, color = discord.Color.random())
+		embed = discord.Embed(title ="The average floor prices for " + buildName + " build are: \n\n", url = url, color = discord.Color.random())
 
 		totalCostEth = 0
 		totalCostUsd = 0
 		count = 1
 		for axie in json_data["data"]["axies"]["results"]:
-			embed.add_field(name ="%d. Price: %.4f ETH / US$ %.2f"%(count,float(axie["auction"]["currentPrice"][0:-14])/10000, float(axie["auction"]["currentPriceUSD"])), value = "Link: https://marketplace.axieinfinity.com/axie/%s/" %(axie['id']),inline=False)
-
 			# To insert into database
 			count +=1
 			totalCostEth += float(axie["auction"]["currentPrice"][0:-14])/10000
 			totalCostUsd += float(axie["auction"]["currentPriceUSD"])
 
+		embed.add_field(name ="Eth Cost", value = round(totalCostEth/count,5) ,inline=True)
+		embed.add_field(name ="Usd Cost", value = round(totalCostUsd/count,3) ,inline=True)
+
 		# add data into database
 		now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 		db["prices"][buildName].append([now,totalCostEth/count,totalCostUsd/count])
-		print(db["prices"])
+	
 		return embed
 
 

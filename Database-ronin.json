@@ -213,7 +213,6 @@
         "investorPercentage": "",
         "investorRonin": ""
       },
-
       {
         "userId" : 789023396733255680,
         "managerShare": 5,
@@ -222,7 +221,44 @@
         "scholarPayoutAddress": "",
         "investorPercentage": "",
         "investorRonin": ""
+      },
+      {
+        "userId" : 331436502783492096,
+        "managerShare": 5,
+        "eth": "ronin:68d2241a2e6405240c5e110098c2d6ac87928600",
+        "name": "cheeann",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+      {
+        "userId" : 368392710349914112,
+        "managerShare": 5,
+        "eth": "ronin:7b8bff423f4b82edbc57c6c6196d6ddf777c0bc8",
+        "name": "weihan",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+      {
+        "userId" : 718273250144026705,
+        "managerShare": 5,
+        "eth": "ronin:22e7b4f9345c9fa42d00bf45454eb6c75e217f92",
+        "name": "peach",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+      {
+        "userId" : 240501029840486400,
+        "managerShare": 5,
+        "eth": "ronin:ac4fee7e0e92df478b60b6a64516057c64090f27",
+        "name": "sengwhye",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
       }
+
     ],
     "Kopi": [
       {
@@ -279,6 +315,42 @@
         "scholarPayoutAddress": "",
         "investorPercentage": "",
         "investorRonin": ""
+      },
+      {
+        "userId" : 893351917114261574,
+        "managerShare": 0,
+        "eth": "ronin:ba187bbdc0f5259b3ad793039ffc6f78fc2f1f2b",
+        "name": "Veno_van",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+      {
+        "userId" : 761825209556140092,
+        "managerShare": 0,
+        "eth": "ronin:5ef0b1acd955b6296b1db7aae3c2cf021f7e4ac3",
+        "name": "tpen",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+      {
+        "userId" : 707465069579075624,
+        "managerShare": 0,
+        "eth": "ronin:0e769abbaaef3469995c1fde1c57089507421fa2",
+        "name": "aaaarroooon",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+      {
+        "userId" : 887656480428425226,
+        "managerShare": 0,
+        "eth": "ronin:f4eae80445f548ebcc957cf27cd247560244731e",
+        "name": "dendi",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
       }
     ],
     "Sol": [
@@ -291,7 +363,6 @@
         "investorPercentage": "",
         "investorRonin": ""
       },
-
       {
         "userId" : 894467093636980757,
         "managerShare": 5,
@@ -324,6 +395,33 @@
         "managerShare": 5,
         "eth": "ronin:3b3f3c9888347621aa74e0bfb22fb16e034abaae",
         "name": "Sungjie",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+			{
+        "userId" : 895957752336240690,
+        "managerShare": 5,
+        "eth": "ronin:7d5e04ac117b6cd16d691d7fa75978cb54f8b2d4",
+        "name": "Buttercoconut",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+			{
+        "userId" : 873438956254027856,
+        "managerShare": 5,
+        "eth": "ronin:328e2136786bbfe79c68f2b2d390197679977436",
+        "name": "Rancidhero",
+        "scholarPayoutAddress": "",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+			{
+        "userId" : 899221406179549184,
+        "managerShare": 5,
+        "eth": "ronin:8bd63ae5e2134c0763f16291617963fc37a6f96f",
+        "name": "Jiji",
         "scholarPayoutAddress": "",
         "investorPercentage": "",
         "investorRonin": ""

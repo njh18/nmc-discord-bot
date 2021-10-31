@@ -26,6 +26,7 @@ def getPriceTrend(build):
 	ax2.set_ylabel("USD",color="blue")
 	
 	plt.title(build + " build")
-	plt.savefig(build+".png")
+	plt.savefig("images/pricegraphs/price-" + build+".png")
+
 
 	return

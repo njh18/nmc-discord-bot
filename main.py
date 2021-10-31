@@ -15,20 +15,30 @@ from getClanSLP import getClanSLP
 from roninAddConverter import roninAddConverter
 from getGuildRonin import getGuildOwnRonin, getGuildMentionRonin
 from getAxieStatsParts import getAxieStatsParts
+from getLeaderboard import getLeaderboard
+from getRecentTeam import getRecentTeam
+from getMMR import getMMR
+from sheets import loadDb
+import pandas as pd
+import pprint
 
 client = discord.Client();
 bot_token = os.environ['TOKEN']
 
 
-# # initialise database (Only need to do it once if you change the file)
-# roninDb = json.load(open("Database-ronin.json"))
-# filtersDb = json.load(open("Database-filters.json"))
-# db.set_bulk({"roninAdd":roninDb["roninAdd"],"filters":filtersDb["filters"]})
+# LOADS GOOGLE SHEET
+pp = pprint.PrettyPrinter()
+df = loadDb()
+pp.pprint(df)
 
-# for key in db["prices"]:
-# 	print(key)
-# 	for theList in db["prices"][key]:
-# 		print(theList.value)
+# to use pprint
+test = json.load((open("Database-filters.json")))
+pp.pprint(test)
+
+# # initialise database (Only need to do it once if you change the file)
+#roninDb = json.load(open("Database-ronin.json"))
+#filtersDb = json.load(open("Database-filters.json"))
+#db.set_bulk({"roninAdd":roninDb["roninAdd"],"filters":filtersDb["filters"]})
 
 
 ## Bot-testing channel ID
@@ -39,19 +49,20 @@ async def cronjob1():
 		channel = client.get_channel(902556837445009448)
 		for key in db["filters"]:
 				value = getAxiePrice(key)
+				getPriceTrend(key)
 				await channel.send(embed = value)
     # await channel.send('This message is sent every 10 minutes')
+		
 
 # will be used for ronin 
 ADMIN_CHANNEL_ID = os.environ["ADMIN_CHANNEL_ID"]
 # “At 00:00.”
-## NOTE: CANNOT GO TO ADMIN, I THINK NEED ADMIN RIGHTS
 CHANNEL_ID = 899694611541409835
 @aiocron.crontab('00 16 * * *')
 async def cornjob2():
 		print("Running cronjob2")
 		for clan in json.loads(db.get_raw("roninAdd")):
-			channel = client.get_channel(CHANNEL_ID)
+			channel = client.get_channel(ADMIN_CHANNEL_ID)
 			await channel.send(embed = getClanSLP(clan))
 
 
@@ -78,10 +89,12 @@ async def on_message(message):
 
 
 	elif msg.startswith('$test'):
-		for key in db["prices"]:
-			getPriceTrend(key)
+		# for key in db["prices"]:
+		# 	getPriceTrend(key)
+		# e = discord.Embed(title="Test", colour=discord.Colour(0x278d89))
+		# e.set_image(f"images/pricegraphs/price-anemone.png")
 		#await message.channel.send(embed = value)
-		await message.channel.send("Testing now")
+		await message.channel.send("Testing")
 
 	# Maybe can remove
 	elif msg.startswith("$getAxieSearchUrl"):
@@ -114,18 +127,31 @@ async def on_message(message):
 	elif msg.startswith('$nezuko'):
 		await message.channel.send('https://tenor.com/view/nezuko-gif-21668450')
 
+	elif msg.startswith('$chandra'):
+		await message.channel.send('☃️ iZ biGinNinGz tU LuK aL0rT Laik kUrisU masU ☃️')
+		await message.channel.send('https://tenor.com/view/merry-christmas-happy-holidays-baby-jesus-snow-gif-15888940')
   #Get SLP market price
 	elif msg.startswith("$priceslp"):
 		usd_price, php_price, week_high, week_low = getSLPPrice()
-		output_msg = "Current Price: US$ {usd:.3f} | Php {php:.2f}\n7D Range: US$ {w_low:.3f}-{w_hi:.3f}".format(usd = usd_price, php = php_price, w_hi=week_high, w_low =week_low)
+		output_msg = "Current Price: US$ {usd:.3f} | Php {php:.2f}".format(usd = usd_price, php = php_price)
+		output_msg2 = "\n7D Range: US$ {w_low:.3f}-{w_hi:.3f}".format(w_hi=week_high, w_low =week_low)
 		if msg != "$priceslp":
 			amt = int(msg.split("$priceslp ",1)[1])
+			amt_str = str(amt)+ " SLP"
 			usd_amt = usd_price * amt
 			php_amt = php_price * amt
-			output_msg += "\n{amt} SLP = US$ {usd_amt:,.2f} | Php {php_amt:,.0f}".format(amt = amt, usd_amt = usd_amt, php_amt = php_amt)
-			
+			embed_msg = "US$ {usd:.3f} | Php {php:.2f}".format(usd = usd_price, php = php_price)
+			embed_msg2 = " ↳ US$ {usd_amt:,.2f} | Php {php_amt:,.0f}".format(amt = amt, usd_amt = usd_amt, php_amt = php_amt)
+			embed = discord.Embed(title= "Smooth Love Potion ($SLP)", color=0xfe93a1).set_thumbnail(url='https://d235dzzkn2ryki.cloudfront.net/small-love-potion_large.png')
+			embed.add_field(name='Current Price', value=embed_msg, inline=False)
+			embed.add_field(name=amt_str, value=embed_msg2, inline=False)
+			embed.set_footer(text='💂 Hail Nephy.')
+			await message.channel.send(embed=embed)
+			return
+
 		await message.channel.send(file=discord.File('images/slp_50.png'))
 		await message.channel.send(output_msg)
+		await message.channel.send(output_msg2)
   
  	#Get AXS market price
 	elif msg.startswith("$priceaxs"):
@@ -159,7 +185,6 @@ async def on_message(message):
 
     # if added a mention
 		else:
-			print('2')
       # if admin, get ronin of mentioned
 			if(admin):
 				mention = msg.split(" ",1)[1]
@@ -167,8 +192,37 @@ async def on_message(message):
 				if(ronin==None):
 					await message.channel.send("User not found in NMC database!")
 				else:
-					await message.channel.send("Let me make a quick trip down to Lunacia to retrieve   that information!")
+					await message.channel.send("Let me make a quick trip down to Lunacia to retrieve that information!")
 					await message.channel.send(embed = getDailySLP(ronin))
+			else:
+				await message.channel.send("Mind your own business.")
+  	#await message.channel.send(client.get_user(roninAdd))
+  	# await message.channel.send(embed=getDailySLP(roninAdd))
+
+	elif msg.startswith("$mymmr"):
+		ronin=0
+    
+    # if self
+		if(len(msg.split(" ",1))==1):
+			
+			ronin = getGuildOwnRonin(message.author.id)
+			if(ronin==None):
+				await message.channel.send("User not found in NMC database!")
+			else:
+				await message.channel.send("Hold on, let me ask boss Nephy.")
+				await message.channel.send(embed = getMMR(ronin))
+
+    # if added a mention
+		else:
+      # if admin, get ronin of mentioned
+			if(admin):
+				mention = msg.split(" ",1)[1]
+				ronin = getGuildMentionRonin(mention)
+				if(ronin==None):
+					await message.channel.send("User not found in NMC database!")
+				else:
+					await message.channel.send("Hold on, let me ask boss Nephy.")
+					await message.channel.send(embed = getMMR(ronin))
 			else:
 				await message.channel.send("Mind your own business.")
   	#await message.channel.send(client.get_user(roninAdd))
@@ -181,6 +235,50 @@ async def on_message(message):
 
 	elif msg.startswith("$melhyu"):
 		await message.channel.send(embed = discord.Embed(title= " Love of Nephy's life ❤️", color=0xf60ea1))
+
+	elif msg.startswith("$leaderboard"):
+		offset = 1
+		limit = 2
+		print(len(msg.split(' ')))
+		if (len(msg.split(' '))>1):
+			params = msg.split("$leaderboard ",1)[1]
+			offset = int(params.split(',')[0]) - 1
+			limit = params.split(',')[1]
+		rank = offset + 1
+
+    # getAxieImage embed format
+		# for ranker in getLeaderboard(offset,limit):
+		# 	await message.channel.send("Rank " + str(rank) + "\n " + "https://axie.zone/profile?ron_addr=" + str(ranker), embed=None)
+		# 	for axie in getRecentTeam(ranker):
+		# 		await message.channel.send(embed = getAxieImage(axie['id'],axie['class']))
+		# 	rank += 1
+
+		embed = 0
+		axie_part = ''
+		axie_stat = ''
+		for ranker in getLeaderboard(offset,limit):
+			embed = discord.Embed(title = "Rank " + str(rank), url="https://axie.zone/profile?ron_addr=" + str(ranker))
+			for axie in getRecentTeam(ranker):
+				axie_part = ''
+				axie_stat = ''
+				for stat in axie['statsParts']:
+					if('name' in stat):
+						axie_part += stat['name'] + ' | '
+					if('card' in stat):
+						axie_part += stat['card']
+						axie_part = axie_part + '\n'
+					if('stat' in stat):
+						axie_stat += stat['stat'].upper() + ':'
+					if('value' in stat):
+						axie_stat += str(stat['value']) + ', '
+				axie_stat = axie_stat[0:-2]
+				axie_part += '\n' + axie_stat
+				embed.add_field(name=axie['class'], value=axie_part, inline=True)
+			rank += 1
+			await message.channel.send(embed = embed)
+			# print(getRecentTeam(ranker))
+			# await message.channel.send(getRecentTeam(ranker))
+      # print(getAxieImage(ranker['']))
 
 	elif msg.startswith("$myronin"):
 		ronin=0
@@ -200,7 +298,7 @@ async def on_message(message):
 				await message.channel.send("User not found in NMC database!")
 			else:
 					await message.channel.send(ronin)
-
+  
 	elif msg.startswith("$myaxie"):
 		ronin=0
     # if self
@@ -209,48 +307,36 @@ async def on_message(message):
 			if(ronin==None):
 				await message.channel.send("Who tf are you?")
 				return
-
+    
     # if added a mention
 		else:
 			mention = msg.split(" ",1)[1]
-
 			ronin = getGuildMentionRonin(mention)
 			print(ronin)
 			if(ronin==None):
 				await message.channel.send("User not found in NMC database")
 				return
 
-
+    # first level check for noob axie message
 		ronin=roninAddConverter(ronin)
-    # if added a
-		url = "https://game-api.axie.technology/battlelog/" + str(ronin)
-		print(url)
-		payload={}
-		headers = {}
-		response = requests.request("GET", url, headers=headers, data=payload)
+		response = requests.request("GET", "https://game-api.axie.technology/battlelog/" + str(ronin), headers={}, data={})
 		json_data = json.loads(response.text)
+		if(ronin!=None and json_data[0]!={}):
+			await message.channel.send('Here are your noob axies.')
+    
+		recent_team = getRecentTeam(ronin)
+		if((recent_team)==None):
+			error_embed = discord.Embed(title = "Axies not found 😢")
+			error_embed.add_field(name = "Network Error", value = "There seems to be problem with Axie's server at the moment. Please check back in abit.")
+			await message.channel.send(embed = error_embed)
+		
+		for axie in recent_team:
+			await message.channel.send(embed = getAxieImage(axie['id'],axie['class']))
+		# await message.channel.send(getRecentTeam(ronin))
 
-		try:
-			if(ronin!=None and json_data[0]!={}):
-				await message.channel.send('Here are your noob axies.')
-      	# print(json_data[0])
 
-			client_id = ''
-			if(str(ronin) == json_data[0]['items'][0]['first_client_id']):
-				client_id=json_data[0]['items'][0]['first_team_id']
-			else:
-				client_id=json_data[0]['items'][0]['second_team_id']
 
-			for fighter in json_data[0]['items'][0]['fighters']:
-				if(fighter['team_id']==client_id):
-					getAxieStatsParts(fighter['fighter_id'])
-					# print(getAxieStatsParts(fighter['fighter_id']))
-					await message.channel.send(embed = getAxieImage(fighter['fighter_id'],fighter['fighter_class']))
-		except:
-				embed = discord.Embed(title = "Axies not found 😢")
-				embed.add_field(name = "Network Error", value = "There seems to be problem with Axie's server at the moment. Please check back in abit.")
-				await message.channel.send(embed = embed)
-
+		# await message.channel.send(embed = getRecentTeam(ronin, message))
 
 
 

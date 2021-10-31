@@ -95,49 +95,16 @@ def getAxieImage(axieId,fighterClass):
       counter+=1
     if(counter>=3):
       counter=0
-  #   print(counter)
-
-  # print(name_list)
-  # print(card_list)
-  # print(stat_list)
-  # print(stat_value_list)
+ 
   
   embed.add_field(name=name_list, value=card_list, inline=False)
   embed.add_field(name=stat_list, value=stat_value_list, inline=True)
 
-  # for statPart in stats_parts_list:
-  #   if('name' in statPart):
-  #     if(counter!=2):
-  #       embed.add_field(name=statPart['name'], value=statPart['card'], inline=True)
-  #       print('true')
-  #     else:
-  #       embed.add_field(name="ㅤ", value="ㅤ", inline=False)
-  #       embed.add_field(name=statPart['name'], value=statPart['card'], inline=True)
-  #     counter+=1
-  #   elif('stat' in statPart):
-  #     if(counter==4): 
-  #       embed.add_field(name="ㅤ", value="ㅤ", inline=False)
-  #     elif(counter==6):
-  #       embed.add_field(name="ㅤ", value="ㅤ", inline=False)
-  #     embed.add_field(name=statPart['stat'], value=statPart['value'], inline=True)
-  #     counter+=1
   embed.set_footer(text="Click the title to view the axie in marketplace")
 
   return embed
 ##
 
-
-	# if response.text == "Bad Request":
-	# 	return "Bad Request Sent"
-	# else:
-	# 	json_data = json.loads(response.text)
-	# 	msg = "The current prices for requested axies are: \n\n"
-	# 	count = 1
-	# 	for axie in json_data["data"]["axies"]["results"]:
-	# 		theString = "%d. Price: %.4f ETH / US$ %.2f Link: https://marketplace.axieinfinity.com/axie/%s/" %(count,float(axie["auction"]["currentPrice"][0:-14])/10000, float(axie["auction"]["currentPriceUSD"]),axie['id'])
-	# 		msg = msg + theString + "\n"
-	# 		count +=1
-	# 	return msg
 
 
 
