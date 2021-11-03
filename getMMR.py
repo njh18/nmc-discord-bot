@@ -13,8 +13,12 @@ def getMMR(roninAdd):
         return discord.Embed(title = "Cannot Find User", color = discord.Color.red())
     else:
       mmr = json_data['leaderboard']['elo']
-
       embed = discord.Embed(title = "Account Details", color = discord.Color.orange())
+      if(roninAdd=="ronin:c841df9a10676269335864da9a7392240e535510"):
+        embed.add_field(name="Bow the f*ck down because your boss's MMR is", value="9999")
+        embed.set_footer(text='Know your f*cking place, ant. 🐜')
+        embed.set_thumbnail(url="https://i.ibb.co/QQTGVNs/Mask-Group-1.png")
+        return embed
       # embed.set_author(name=thename)
       # today = date.today()
       # yesterday = today - datetime.timedelta(day=1)
@@ -29,6 +33,8 @@ def getMMR(roninAdd):
 
       # embed.set_thumbnail(url = img_list[random_pic_index])
       # embed.add_field(name =  "MMR", value = mmr,inline=True)
+
+        
       
       return embed
   except:

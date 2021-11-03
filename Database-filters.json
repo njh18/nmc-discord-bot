@@ -1,46 +1,62 @@
 {
-  "filters": {
-    "anemone": {
-      "url": "https://marketplace.axieinfinity.com/axie/?class=Aquatic&part=back-anemone&part=mouth-lam&part=horn-anemone&part=mouth-piranha&part=mouth-risky-fish&part=tail-nimo&hp=45&hp=61&speed=57&speed=61&skill=35&skill=61",
-      "criteria": {
-        "classes": ["Aquatic"],
-        "parts": [
-          "back-anemone",
-          "mouth-piranha",
-          "mouth-risky-fish",
-          "mouth-lam",
-          "horn-anemone",
-          "tail-nimo"
-        ],
-        "pureness": [],
-        "numMystic": [],
-        "stages": [],
-        "breedCount": [],
-        "speed": [57, 61],
-        "hp": [45, 61],
-        "skill": [35, 61],
-        "morale": [27, 61]
-      }
-    },
-    "leafbug": {
-      "url": "https://marketplace.axieinfinity.com/axie/?part=horn-leaf-bug&part=tail-carrot&part=back-pumpkin&part=mouth-serious&pureness=5",
-      "criteria": {
-        "classes": [],
-        "parts": [
-          "horn-leaf-bug",
-          "tail-carrot",
-          "back-pumpkin",
-          "mouth-serious"
-        ],
-        "pureness": [5],
-        "numMystic": [],
-        "stages": [],
-        "breedCount": [],
-        "speed": [],
-        "hp": [],
-        "skill": [],
-        "morale": []
-      }
-    }
-  }
+	"filters": {
+		"anemone": {
+			"url": "https://marketplace.axieinfinity.com/axie/?class=Aquatic&part=back-anemone&part=mouth-lam&part=horn-anemone&part=mouth-piranha&part=mouth-risky-fish&part=tail-nimo&hp=45&hp=61&speed=57&speed=61&skill=35&skill=61",
+			"criteria": {
+				"classes": [
+					"Aquatic"
+				],
+				"parts": [
+					"back-anemone",
+					"mouth-piranha",
+					"mouth-risky-fish",
+					"mouth-lam",
+					"horn-anemone",
+					"tail-nimo"
+				],
+				"pureness": [],
+				"numMystic": [],
+				"stages": [],
+				"breedCount": [],
+				"speed": [
+					57,
+					61
+				],
+				"hp": [
+					45,
+					61
+				],
+				"skill": [
+					35,
+					61
+				],
+				"morale": [
+					27,
+					61
+				]
+			}
+		},
+		"leafbug": {
+			"url": "https://marketplace.axieinfinity.com/axie/?part=horn-leaf-bug&part=tail-carrot&part=back-pumpkin&part=mouth-serious&pureness=5",
+			"criteria": {
+				"classes": [],
+				"parts": [
+					"horn-leaf-bug",
+					"tail-carrot",
+					"back-pumpkin",
+					"mouth-serious"
+				],
+				"pureness": [
+					5
+				],
+				"numMystic": [],
+				"stages": [],
+				"breedCount": [],
+				"speed": [],
+				"hp": [],
+				"skill": [],
+				"morale": []
+			}
+		}
+	}
 }
