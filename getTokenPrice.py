@@ -7,13 +7,14 @@ cg = CoinGeckoAPI()
 print(cg.ping())
 
 def getSLPPrice():
-  slp_price = cg.get_price("smooth-love-potion", ("usd, php"))
+  slp_price = cg.get_price("smooth-love-potion", ("usd, php, eth"))
   usd_price = slp_price['smooth-love-potion']['usd']
   php_price = slp_price['smooth-love-potion']['php']
+  eth_price = slp_price['smooth-love-potion']['eth']
   hist_price = (cg.get_coin_ohlc_by_id("smooth-love-potion", "usd", 7))
   week_high = max([el[2] for el in hist_price])
   week_low = min([el[3] for el in hist_price])
-  return (usd_price,php_price,week_high,week_low)
+  return (usd_price,php_price,eth_price,week_high,week_low)
 
 def getAXSPrice():
   axs_price = cg.get_price("axie-infinity", ("usd, php"))

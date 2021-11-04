@@ -169,11 +169,11 @@ async def on_message(message):
 		await message.channel.send('https://tenor.com/view/merry-christmas-happy-holidays-baby-jesus-snow-gif-15888940')
   #Get SLP market price
 	elif msg.startswith("$priceslp"):
-		usd_price, php_price, week_high, week_low = getSLPPrice()
+		usd_price, php_price, eth_price, week_high, week_low = getSLPPrice()
 		# output_msg = "Current Price: US$ {usd:.3f} | Php {php:.2f}".format(usd = usd_price, php = php_price)
 		# output_msg2 = "\n7D Range: US$ {w_low:.3f}-{w_hi:.3f}".format(w_hi=week_high, w_low =week_low)
 		embed = discord.Embed(title= "Smooth Love Potion ($SLP)", color=0xfe93a1).set_thumbnail(url='https://d235dzzkn2ryki.cloudfront.net/small-love-potion_large.png')
-		embed_msg = "US$ {usd:.3f} | Php {php:.2f}".format(usd = usd_price, php = php_price)
+		embed_msg = "US$ {usd:.3f} | Php {php:.2f}\nETH {eth:.8f}".format(usd = usd_price, php = php_price, eth = eth_price)
 		embed.add_field(name='Current Price', value=embed_msg, inline=False)
 		embed.set_footer(text='💂 Hail Nephy.')
 		if msg != "$priceslp":
@@ -181,7 +181,8 @@ async def on_message(message):
 			amt_str = str(amt)+ " SLP"
 			usd_amt = usd_price * amt
 			php_amt = php_price * amt
-			embed_msg2 = " ↳ US$ {usd_amt:,.2f} | Php {php_amt:,.0f}".format(amt = amt, usd_amt = usd_amt, php_amt = php_amt)
+			eth_amt = eth_price * amt
+			embed_msg2 = " ↳ US$ {usd_amt:,.2f} | Php {php_amt:,.0f}\n ↳ ETH {eth_amt:,.4f}".format(amt = amt, usd_amt = usd_amt, php_amt = php_amt, eth_amt = eth_amt)
 			embed.add_field(name=amt_str, value=embed_msg2, inline=False)
 		await message.channel.send(embed=embed)
 
@@ -278,8 +279,12 @@ async def on_message(message):
 
 	#Get SLP for entire Clan
 	elif msg.startswith("$clanslp"):
+		if(admin==False):
+			return
 		clan = msg.split("$clanslp ",1)[1]
+		await message.channel.send("Walan eh everytime make me do so much work.. 😒 kk w8 awhile.")
 		await message.channel.send(embed = getClanSLP(clan))
+		# await message.channel.send('nah, 好了. ' + clan + ' Clan MMR & SLP info retrieved.')
 
 	elif msg.startswith("$melhyu"):
 		await message.channel.send(embed = discord.Embed(title= " Love of Nephy's life ❤️", color=0xf60ea1))
@@ -425,7 +430,7 @@ async def on_message(message):
 				print(mention)
 
 				clan_emojis = ['\N{Palm Tree}', '\N{Last Quarter Moon with Face}','\N{Hot Beverage}','\N{Glowing Star}']
-				clan_names = ['Oasis', 'Lunar', 'Kopi','Sol', ]
+				clan_names = ['oasis', 'lunar', 'kopi','sol', ]
 
     # Check Clan
 
@@ -451,7 +456,7 @@ async def on_message(message):
 							clan_emoji = reaction.emoji
 							clan = clan_names[clan_emojis.index(clan_emoji)]
 						# await message.channel.send('New scholar is from ' + clan + ' clan.')
-							await message.channel.send('\n Input received : ' + clan + ' clan. \n')
+							await message.channel.send('\n Input received : ' + clan.capitalize() + ' clan. \n')
 							check_timer = max_timer
 					check_timer += 5
 					print(check_timer)
@@ -512,7 +517,7 @@ async def on_message(message):
       	
 				confirm_emojis = ['\N{White Heavy Check Mark}','\N{Cross Mark}']
 
-				embed = discord.Embed(title= "Kindly confirm the details of new scholar", color=0x66a1a5).add_field(name="Discord Name : ", value=str(message.mentions[0].name), inline=False).add_field(name="Clan : ", value=clan,inline=False).add_field(name="User ID : ", value=str(mention), inline=False).add_field(name="Ronin Address : ", value=ronin, inline=False)
+				embed = discord.Embed(title= "Kindly confirm the details of new scholar", color=0x66a1a5).add_field(name="Discord Name : ", value=str(message.mentions[0].name), inline=False).add_field(name="Clan : ", value=clan.capitalize(),inline=False).add_field(name="User ID : ", value=str(mention), inline=False).add_field(name="Ronin Address : ", value=ronin, inline=False)
 				message3 = await message.channel.send(embed=embed)
 				for emoji in confirm_emojis:
 					await message3.add_reaction(emoji)

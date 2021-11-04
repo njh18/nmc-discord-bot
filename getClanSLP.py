@@ -8,18 +8,19 @@ from replit import db
 def getClanSLP(clan):
 
 	# Initialise the embeded
-	if clan == "Oasis":
+	if clan.lower() == "oasis":
 		color = discord.Color.blue()
-	elif clan == "Lunar":
+	elif clan.lower() == "lunar":
 		color = discord.Color.gold()
-	elif clan == "Kopi":
+	elif clan.lower() == "kopi":
 		color = discord.Color.dark_purple()
-	elif clan == "Sol":
+	elif clan.lower() == "sol":
 		color = discord.Color.red()
 	else:
 		color = discord.Color.light_gray()
+		return discord.Embed(title="Eh no such clan leh", color=color)
 		
-	embed = discord.Embed(title = clan +  " clan's Daily Updates", color = color)
+	embed = discord.Embed(title = clan.capitalize() +  " clan's Daily Updates", color = color)
 
 	roninAddDb = json.loads(db.get_raw("roninAdd"))[clan]
 

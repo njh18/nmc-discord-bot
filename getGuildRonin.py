@@ -1,7 +1,7 @@
 from replit import db
 import re # to search for digit
 
-clans = ['Oasis', 'Kopi', 'Lunar', 'Sol']
+clans = ['oasis', 'kopi', 'lunar', 'sol']
 
 def getGuildOwnRonin(guildMember):
 	for clan in clans:
