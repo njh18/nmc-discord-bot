@@ -56,16 +56,17 @@ async def cronjob1():
     # await channel.send('This message is sent every 10 minutes')
 		
 
-# will be used for ronin 
-ADMIN_CHANNEL_ID = os.environ["ADMIN_CHANNEL_ID"]
-# “At 00:00.”
+
+# “At 8PM in UTC / 4PM SGT”
 CHANNEL_ID = 899694611541409835
-@aiocron.crontab('00 16 * * *')
+@aiocron.crontab('00 20 * * *')
 async def cornjob2():
 		print("Running cronjob2")
 		for clan in json.loads(db.get_raw("roninAdd")):
-			channel = client.get_channel(ADMIN_CHANNEL_ID)
-			await channel.send(embed = getClanSLP(clan))
+			if clan != "singapore":
+				channel = client.get_channel(905898436883275816)
+				await channel.send("Retrieving Clan Info!")
+				await channel.send(embed = getClanSLP(clan))
 
 
 # when bot is ready to be use
@@ -75,29 +76,6 @@ async def on_ready():
 
 # bot = commands.Bot(command_prefix='$')
 
-# @bot.event
-# async def on_reaction_add(reaction, user):
-#     embed = reaction.embeds[0]
-#     emoji = reaction.emoji
-
-#     if user.bot:
-#         return
-
-#     if emoji == '\N{Last Quarter Moon with Face}':
-#       fixed_channel = bot.get_channel(channel_id)
-#       print('palm')
-#       await fixed_channel.send(embed=embed)
-#     elif emoji == '\N{Palm Tree}':
-#       print('palm')
-#       await fixed_channel.send(embed=embed)
-#     elif emoji == '\N{Glowing Star}':
-#       print('palm')
-#       await fixed_channel.send(embed=embed)
-#     elif emoji == '\N{Hot Beverage}':
-#       print('palm')
-#       await fixed_channel.send(embed=embed)
-#     else:
-#         return
 
 # Main Function -> When someone sends a message
 @client.event
@@ -105,11 +83,23 @@ async def on_message(message):
 
 	if message.author == client.user:
 		return
+	msg = message.content
   
+  # boolean to check for role
+
 	admin = False
+	developer = False
+	nmcmanager = False
+	moderator = False
+
+	if "developer" in [y.name.lower() for y in message.author.roles]:
+		developer = True
+	if "nmc manager" in [y.name.lower() for y in message.author.roles]:
+		nmcmanager = True
+	if "moderator" in [y.name.lower() for y in message.author.roles]:
+		moderator = True
 	if(message.author.top_role.permissions.administrator):
 		admin = True
-	msg = message.content
 
 	# Get the floor-axie prices
 	if msg.startswith('$floor-axies'):
@@ -177,7 +167,7 @@ async def on_message(message):
 		embed.add_field(name='Current Price', value=embed_msg, inline=False)
 		embed.set_footer(text='💂 Hail Nephy.')
 		if msg != "$priceslp":
-			amt = int(msg.split("$priceslp ",1)[1])
+			amt = float(msg.split("$priceslp ",1)[1])
 			amt_str = str(amt)+ " SLP"
 			usd_amt = usd_price * amt
 			php_amt = php_price * amt
@@ -222,8 +212,9 @@ async def on_message(message):
 
     # if added a mention
 		else:
+			print('hi')
       # if admin, get ronin of mentioned
-			if(admin):
+			if(admin or nmcmanager or developer or moderator):
 				mention = msg.split(" ",1)[1]
 				ronin = getGuildMentionRonin(mention)
 				if(ronin==None):
@@ -264,7 +255,7 @@ async def on_message(message):
 				return
 
       # if admin, get ronin of mentioned
-			if(admin):
+			if(admin or nmcmanager or developer):
 				mention = msg.split(" ",1)[1]
 				ronin = getGuildMentionRonin(mention)
 				if(ronin==None):
@@ -279,8 +270,9 @@ async def on_message(message):
 
 	#Get SLP for entire Clan
 	elif msg.startswith("$clanslp"):
-		if(admin==False):
+		if(not(admin == True or moderator == True or developer == True or nmcmanager == True)==True):
 			return
+
 		clan = msg.split("$clanslp ",1)[1]
 		await message.channel.send("Walan eh everytime make me do so much work.. 😒 kk w8 awhile.")
 		await message.channel.send(embed = getClanSLP(clan))
@@ -351,8 +343,31 @@ async def on_message(message):
 				await message.channel.send("User not found in NMC database!")
 			else:
 					await message.channel.send(ronin)
-  
+
 	elif msg.startswith("$myaxie"):
+		ronin=0
+    # if self
+		if(len(msg.split(" ",1))==1):
+			ronin = getGuildOwnRonin(message.author.id)
+			if(ronin==None):
+				await message.channel.send("User not found in NMC database!")
+			else:
+				# await message.channel.send(ronin)
+				return await message.channel.send('https://marketplace.axieinfinity.com/profile/' + ronin + '/axie/')
+
+    # if added a mention
+		else:
+			mention = msg.split(" ",1)[1]
+			ronin = getGuildMentionRonin(mention)
+			if(ronin==None):
+				await message.channel.send("User not found in NMC database!")
+			else:
+				return await message.channel.send('https://marketplace.axieinfinity.com/profile/' + ronin + '/axie/')
+          
+    
+  
+
+	elif msg.startswith("$archivedmyaxie"):
 		ronin=0
     # if self
 		if(len(msg.split(" ",1))==1):
@@ -420,6 +435,82 @@ async def on_message(message):
 	elif msg.startswith('$dsa'):
 		print(message.mentions[0].name)
 		print(type(message.mentions[0].name))
+
+	elif msg.startswith('$1priceslptest'):
+		usd_price, php_price, eth_price, week_high, week_low = getSLPPrice()
+		currency_logos = ['\N{Palm Tree}', '\N{Last Quarter Moon with Face}','\N{Hot Beverage}']
+		currency_names = ['USD', 'PHP', 'ETH']
+
+    # Choose currency
+		embed = discord.Embed(title="What Currency to Convert?")
+		initial_message = await message.channel.send(embed= embed)
+		for logo in currency_logos:
+			await initial_message.add_reaction(logo)
+
+		max_timer = 30
+		check_timer = 0
+
+		currency_logo = 0
+		currency = 0
+
+		while(check_timer<max_timer):
+			print('waiting for input')
+			await asyncio.sleep(5)
+			initial_fetch = await message.channel.fetch_message(initial_message.id)
+			print('waiting for input')
+			for reaction in initial_fetch.reactions:
+				print(reaction.count)
+				if(reaction.count==2):			
+					currency_logo = reaction.emoji
+					currency = currency_names[currency_logos.index(currency_logo)]
+					# await message.channel.send('\n Currency Chosen : ' + currency.capitalize())
+					check_timer = max_timer
+				check_timer += 5
+				print(check_timer)
+		if(currency==0):
+			initial_message = await message.channel.send('No input received. Please try to \'$1priceslptest\' again.')
+			return
+      
+    # For each currency (Will Edit to make it less repetitive later)
+		if(currency == 'USD'):
+			embed = discord.Embed(title= "Smooth Love Potion ($SLP)", color=0xfe93a1).set_thumbnail(url='https://d235dzzkn2ryki.cloudfront.net/small-love-potion_large.png')
+			embed_msg = "US$ {usd:.3f}".format(usd = usd_price)
+			embed.add_field(name='Current Price', value=embed_msg, inline=False)
+			embed.set_footer(text='💂 Hail Nephy.')
+			if msg != "$1priceslptest":
+			  amt = float(msg.split("$1priceslptest ",1)[1])
+			  amt_str = str(amt)+ " SLP"
+			  usd_amt = usd_price * amt
+			  embed_msg2 = " ↳ US$ {usd_amt:,.2f}".format(amt = amt, usd_amt = usd_amt)
+			  embed.add_field(name=amt_str, value=embed_msg2, inline=False)
+			await message.channel.send(embed=embed)
+
+		if(currency == 'PHP'):
+			embed = discord.Embed(title= "Smooth Love Potion ($SLP)", color=0xfe93a1).set_thumbnail(url='https://d235dzzkn2ryki.cloudfront.net/small-love-potion_large.png')
+			embed_msg = "PHP {php:.2f}".format(php = php_price)
+			embed.add_field(name='Current Price', value=embed_msg, inline=False)
+			embed.set_footer(text='💂 Hail Nephy.')
+			if msg != "$1priceslptest":
+			  amt = float(msg.split("$1priceslptest ",1)[1])
+			  amt_str = str(amt)+ " SLP"
+			  php_amt = php_price * amt
+			  embed_msg2 = " ↳ PHP {php_amt:,.2f}".format(amt = amt, php_amt = php_amt)
+			  embed.add_field(name=amt_str, value=embed_msg2, inline=False)
+			await message.channel.send(embed=embed)
+
+		if(currency == 'ETH'):
+			embed = discord.Embed(title= "Smooth Love Potion ($SLP)", color=0xfe93a1).set_thumbnail(url='https://d235dzzkn2ryki.cloudfront.net/small-love-potion_large.png')
+			embed_msg = "ETH {eth:.8f}".format(eth = eth_price)
+			embed.add_field(name='Current Price', value=embed_msg, inline=False)
+			embed.set_footer(text='💂 Hail Nephy.')
+			if msg != "$1priceslptest":
+			  amt = float(msg.split("$1priceslptest ",1)[1])
+			  amt_str = str(amt)+ " SLP"
+			  eth_amt = eth_price * amt
+			  embed_msg2 = " ↳ ETH {eth_amt:,.2f}".format(amt = amt, eth_amt = eth_amt)
+			  embed.add_field(name=amt_str, value=embed_msg2, inline=False)
+			await message.channel.send(embed=embed)
+      
 
 	elif msg.startswith('$onboard'):
 		if(admin):
