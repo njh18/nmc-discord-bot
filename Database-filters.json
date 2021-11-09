@@ -1,11 +1,26 @@
 {
 	"filters": {
-		"anemone": {
+		"flooraxie": {
+      "name": "Floor Axies",
+			"url": "https://marketplace.axieinfinity.com/axie/",
+			"criteria": {
+				"classes": [],
+				"parts": [],
+				"pureness": [],
+				"numMystic": [],
+				"stages": [],
+				"breedCount": [],
+				"speed": [],
+				"hp": [],
+				"skill": [],
+				"morale": []
+			}
+		},
+    "anemone": {
+      "name": "Double Anemone (57 Spd)",
 			"url": "https://marketplace.axieinfinity.com/axie/?class=Aquatic&part=back-anemone&part=mouth-lam&part=horn-anemone&part=mouth-piranha&part=mouth-risky-fish&part=tail-nimo&hp=45&hp=61&speed=57&speed=61&skill=35&skill=61",
 			"criteria": {
-				"classes": [
-					"Aquatic"
-				],
+				"classes": ["Aquatic"],
 				"parts": [
 					"back-anemone",
 					"mouth-piranha",
@@ -18,42 +33,74 @@
 				"numMystic": [],
 				"stages": [],
 				"breedCount": [],
-				"speed": [
-					57,
-					61
-				],
-				"hp": [
-					45,
-					61
-				],
-				"skill": [
-					35,
-					61
-				],
-				"morale": [
-					27,
-					61
-				]
+				"speed": [57,61],
+				"hp": [45,61],
+				"skill": [35,61],
+				"morale": [27,61]
 			}
 		},
 		"leafbug": {
+      "name": "Leafbug Plant",
 			"url": "https://marketplace.axieinfinity.com/axie/?part=horn-leaf-bug&part=tail-carrot&part=back-pumpkin&part=mouth-serious&pureness=5",
 			"criteria": {
-				"classes": [],
+				"classes": ["Plant"],
 				"parts": [
 					"horn-leaf-bug",
 					"tail-carrot",
 					"back-pumpkin",
 					"mouth-serious"
 				],
-				"pureness": [
-					5
-				],
+				"pureness": [5],
 				"numMystic": [],
 				"stages": [],
 				"breedCount": [],
 				"speed": [],
 				"hp": [],
+				"skill": [],
+				"morale": []
+			}
+		},
+    "dusktermi": {
+      "name": "Dusk Termi (46 Spd)",
+			"url": "https://marketplace.axieinfinity.com/axie/?class=Dusk&part=back-snail-shell&part=tail-thorny-caterpillar&part=mouth-tiny-turtle&part=horn-lagging&speed=46&speed=61",
+			"criteria": {
+				"classes": ["Dusk"],
+				"parts": [
+					"horn-lagging",
+					"tail-thorny-caterpillar",
+					"back-snail-shell",
+					"mouth-tiny-turtle"
+				],
+				"pureness": [],
+				"numMystic": [],
+				"stages": [],
+				"breedCount": [],
+				"speed": [46,61],
+				"hp": [],
+				"skill": [],
+				"morale": []
+			}
+		},
+    "immortal plant": {
+      "name": "Immortal Plant",
+			"url": "https://marketplace.axieinfinity.com/axie/?class=Plant&part=back-bidens&part=horn-beech&part=horn-cactus&part=tail-hot-butt&part=mouth-zigzag&hp=59&hp=61",
+			"criteria": {
+				"classes": [
+          "Plant"
+        ],
+				"parts": [
+					"horn-beech",
+          "horn-cactus",
+					"tail-hot-butt",
+					"back-bidens",
+					"mouth-zigzag"
+				],
+				"pureness": [],
+				"numMystic": [],
+				"stages": [],
+				"breedCount": [],
+				"speed": [],
+				"hp": [59,61],
 				"skill": [],
 				"morale": []
 			}

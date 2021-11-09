@@ -14,7 +14,7 @@ def getAxiePrice(buildName):
 	payload["variables"]["criteria"] = filterData[buildName]["criteria"]
 
 	url = os.environ["GRAPHQL"]
-
+  
 	headers = {
 	'Content-Type': 'application/json'
 	}
@@ -27,25 +27,35 @@ def getAxiePrice(buildName):
 		json_data = json.loads(response.text)
 		
 		url = filterData[buildName]["url"]
+		name = filterData[buildName]["name"]
 
-		embed = discord.Embed(title ="The average floor prices for " + buildName + " build are: \n\n", url = url, color = discord.Color.random())
+		#embed = discord.Embed(title ="The average floor prices for " + name + " build are: \n\n", url = url, color = discord.Color.random())
 
 		totalCostEth = 0
 		totalCostUsd = 0
 		count = 1
+
 		for axie in json_data["data"]["axies"]["results"]:
 			# To insert into database
 			count +=1
 			totalCostEth += float(axie["auction"]["currentPrice"][0:-14])/10000
 			totalCostUsd += float(axie["auction"]["currentPriceUSD"])
 
-		embed.add_field(name ="Eth Cost", value = round(totalCostEth/count,5) ,inline=True)
-		embed.add_field(name ="Usd Cost", value = round(totalCostUsd/count,3) ,inline=True)
+		eth_cost = round(totalCostEth/count,5)
+		usd_cost = round(totalCostUsd/count,3)
+		#embed.add_field(name ="Eth Cost", value = round(totalCostEth/count,5) ,inline=True)
+		#embed.add_field(name ="Usd Cost", value = round(totalCostUsd/count,3) ,inline=True)
 
 		# add data into database
 		now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-		db["prices"][buildName].append([now,totalCostEth/count,totalCostUsd/count])
+
+		try:
+			db["prices"][buildName].append([now,totalCostEth/count,totalCostUsd/count])
+		except:
+			db["prices"][buildName]=[]
+			db["prices"][buildName].append([now,totalCostEth/count,
+      totalCostUsd/count])
 	
-		return embed
+		return name, url, eth_cost, usd_cost
 
 

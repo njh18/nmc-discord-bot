@@ -1,6 +1,6 @@
 import requests
 import json
-from getAxieStatsParts import getAxieStatsParts
+from API.getAxieStatsParts import getAxieStatsParts
 
 
 def getRecentTeam(ronin):

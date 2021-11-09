@@ -2,7 +2,7 @@ import requests
 import os
 import json
 import discord
-from getUpdateRapidApi import getUpdateRapidApi
+from API.getUpdateRapidApi import getUpdateRapidApi
 from datetime import datetime, timedelta
 from random import random,randint
 

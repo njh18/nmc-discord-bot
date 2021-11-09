@@ -13,6 +13,7 @@ aiocron = "^1.7"
 gspread = "^4.0.1"
 oauth2client = "^4.1.3"
 pandas = "^1.3.4"
+forex-python = "^1.6"
 
 [tool.poetry.dev-dependencies]
 

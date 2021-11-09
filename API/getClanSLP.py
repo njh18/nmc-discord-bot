@@ -28,7 +28,7 @@ def getClanSLP(clan):
 	try:
 		for user in roninAddDb:
     #get 0x
-			roninAdd = roninAddConverter(user["eth"]) 
+			roninAdd = roninAddConverter(user["scholarRonin"]) 
 			url = "https://axie-infinity.p.rapidapi.com/get-update/" + roninAdd +"?id=" + roninAdd
 
 			payload={}

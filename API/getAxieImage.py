@@ -1,72 +1,72 @@
 import json
 import requests
 import discord
-from getAxieStatsParts import getAxieStatsParts
+from API.getAxieStatsParts import getAxieStatsParts
 
-def getAxieImage(axieId,fighterClass):
+def getAxieImage(axieId,fighterClass,axieImage):
   url = "https://graphql-gateway.axieinfinity.com/graphql"
 
   axie_url = "https://marketplace.axieinfinity.com/axie/" + str(axieId)
   embed = 0
   if(fighterClass=="Aquatic"):
-    title = "Aqua - " + str(axieId)
+    title = "🔗 Aqua - " + str(axieId)
     embed = discord.Embed(title = title, color = 0x00B8CE, url=axie_url)
     # embed.add_field(name="Note", value="Click title to view axie in marketplace",inline=True)
 
   elif(fighterClass=="Beast"):
-    title = "Beast - " + str(axieId)
+    title = "🔗 Beast - " + str(axieId)
     embed = discord.Embed(title = title, color = 0xFFB812, url=axie_url)
     # embed.add_field(name="Note", value="Click title to view axie in marketplace",inline=True)
 
   elif(fighterClass=="Bird"):
-    title = "Bird - " + str(axieId)
+    title = "🔗 Bird - " + str(axieId)
     embed = discord.Embed(title = title, color = 0xFF8BBD, url=axie_url)
     # embed.add_field(name="Note", value="Click title to view axie in marketplace",inline=True)
 
   elif(fighterClass=="Bug"):
-    title = "Bug - " + str(axieId)
+    title = "🔗 Bug - " + str(axieId)
     embed = discord.Embed(title = title, color = 0xFF5341, url=axie_url)
     # embed.add_field(name="Note", value="Click title to view axie in marketplace",inline=True)
 
   elif(fighterClass=="Dawn"):
-    title = "Dawn - " + str(axieId)
+    title = "🔗 Dawn - " + str(axieId)
     embed = discord.Embed(title = title, color = 0xBECEFF, url=axie_url)
     # embed.add_field(name="Note", value="Click title to view axie in marketplace",inline=True)
 
   elif(fighterClass=="Dusk"):
-    title = "Dusk - " + str(axieId)
+    title = "🔗 Dusk - " + str(axieId)
     embed = discord.Embed(title = title, color = 0x129092, url=axie_url)
     # embed.add_field(name="Note", value="Click title to view axie in marketplace",inline=True)
 
   elif(fighterClass=="Mech"):
-    title = "Mech - " + str(axieId)
+    title = "🔗 Mech - " + str(axieId)
     embed = discord.Embed(title = title, color = 0xC6BDD4, url=axie_url)
     # embed.add_field(name="Note", value="Click title to view axie in marketplace",inline=True)
 
   elif(fighterClass=="Plant"):
-    title = "Plant - " + str(axieId)
+    title = "🔗 Plant - " + str(axieId)
     embed = discord.Embed(title = title, color = 0x6CC000, url=axie_url)
     # embed.add_field(name="Note", value="Click title to view axie in marketplace",inline=True)
 
   elif(fighterClass=="Reptile"):
-    title = "Reptile - " + str(axieId)
+    title = "🔗 Reptile - " + str(axieId)
     embed = discord.Embed(title = title, color = 0xDC8BE4, url=axie_url)
     # embed.add_field(name="Note", value="Click title to view axie in marketplace",inline=True)
 
-  payload = json.dumps({
-  "operationName": "GetAxieDetail",
-  "variables": {
-    "axieId": axieId
-  },
-  "query": "query GetAxieDetail($axieId: ID!) {\n  axie(axieId: $axieId) {\n image\n } \n } \n "
-})
-  headers = {
-  'Content-Type': 'application/json'
-}
+#   payload = json.dumps({
+#   "operationName": "GetAxieDetail",
+#   "variables": {
+#     "axieId": axieId
+#   },
+#   "query": "query GetAxieDetail($axieId: ID!) {\n  axie(axieId: $axieId) {\n image\n } \n } \n "
+# })
+#   headers = {
+#   'Content-Type': 'application/json'
+# }
 
-  response = requests.request("POST", url, headers=headers, data=payload)
-  axie_image = json.loads(response.text)['data']['axie']['image']
-  embed.set_thumbnail(url=axie_image)
+#   response = requests.request("POST", url, headers=headers, data=payload)
+#   axie_image = json.loads(response.text)['data']['axie']['image']
+  embed.set_thumbnail(url=axieImage)
 
   stats_parts_list = getAxieStatsParts(axieId)
   

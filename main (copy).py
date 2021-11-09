@@ -23,16 +23,6 @@ from API.getMMR import getMMR
 from API.getGuildAverageSLP import getGuildAverageSLP
 # Import Functions from Core
 from Core.forceAP import forceAP
-from Core.priceSLP import priceSLP
-from Core.priceSGD import priceSGD
-from Core.priceUSD import priceUSD
-from Core.pricePHP import pricePHP
-from Core.priceAXS import priceAXS
-from Core.priceETH import priceETH
-from Core.mySLP import mySLP
-from Core.myMMR import myMMR
-from Core.myAxieLink import myAxieLink
-from Core.myAxie import myAxie
 # from sheets import loadDb
 import pandas as pd
 import pprint
@@ -160,6 +150,20 @@ async def on_message(message):
 
     elif msg.startswith('$forceAP'):
       embed = forceAP(eth_logo)
+        # embed = discord.Embed(title="Axie Prices",
+        #                       description="Average axie prices in ETH and US$",
+        #                       color=discord.Color.random())
+        # embed.set_thumbnail(
+        #     url=
+        #     "https://s.alicdn.com/@sc04/kf/H6ff5bea9b74745a790b7c41afdd61cdbl.png"
+        # )
+        # for key in db["filters"]:
+        #     name, url, eth_cost, usd_cost = getAxiePrice(key)
+        #     msg = str(eth_logo) + "ETH {eth:.3f} | ".format(
+        #         eth=eth_cost) + "🇺🇸US$ {usd:.0f} ".format(
+        #             usd=usd_cost
+        #         ) + "\n [Link to the marketplace]({url})".format(url=url)
+        #     embed.add_field(name=name, value=msg, inline=False)
       await message.channel.send(embed=embed)
 
     elif msg.startswith('$dbupdate'):
@@ -174,7 +178,12 @@ async def on_message(message):
             await message.channel.send('Guild Database Updated')
 
     elif msg.startswith('$test'):
-        await message.channel.send(embed = discord.Embed(description = "testing"))
+        # for key in db["prices"]:
+        # 	getPriceTrend(key)
+        # e = discord.Embed(title="Test", colour=discord.Colour(0x278d89))
+        # e.set_image(f"images/pricegraphs/price-anemone.png")
+        #await message.channel.send(embed = value)
+        await message.channel.send("Testing")
 
     # Maybe can remove
     elif msg.startswith("$getAxieSearchUrl"):
@@ -188,7 +197,7 @@ async def on_message(message):
         except IndexError:
             await message.channel.send("No Input given!")
 
-# maybe can remove
+#maybe can remove
     elif msg.startswith("$buildprice"):
         buildName = msg.split("$buildprice ", 1)[1]
         msg = getAxiePrice(json.loads(db.get_raw("filters"))[buildName])[0]
@@ -222,30 +231,269 @@ async def on_message(message):
         await message.channel.send(
             'https://tenor.com/view/merry-christmas-happy-holidays-baby-jesus-snow-gif-15888940'
         )
-# Get Currency Conversion price
+#Get SLP market price
     elif msg.startswith("$priceslp"):
-      embed = priceSLP(eth_logo, axs_logo, slp_logo, msg)
-      await message.channel.send(embed=embed)
+        sgd_price, usd_price, php_price, eth_price, axs_price, week_high, week_low = getSLPPrice(
+        )
+        embed = discord.Embed(
+            title="Smooth Love Potion ($SLP)", color=0xfe93a1
+        ).set_thumbnail(
+            url=
+            'https://d235dzzkn2ryki.cloudfront.net/small-love-potion_large.png'
+        )
+        embed_msg = "🇺🇸 USD$ {usd:.3f} | 🇵🇭 PHP$ {php:.2f} | 🇸🇬 SGD$ {sgd:.3f} \n {eth_logo} ETH {eth:.8f} | {axs_logo} AXS {axs:.06f} \n".format(
+            usd=usd_price,
+            php=php_price,
+            sgd=sgd_price,
+            eth=eth_price,
+            axs=axs_price,
+            eth_logo=eth_logo,
+            axs_logo=axs_logo)
+        embed.add_field(name='Current Price', value=embed_msg, inline=False)
+        embed.set_footer(text='💂 Hail Nephy.')
+        if msg != "$priceslp":
+            amt = int(msg.split("$priceslp ", 1)[1])
+            amt_str = str(amt) + "SLP {slp_logo}".format(slp_logo=slp_logo)
+            usd_amt = usd_price * amt
+            php_amt = php_price * amt
+            sgd_amt = sgd_price * amt
+            axs_amt = axs_price * amt
+            eth_amt = eth_price * amt
+            embed_msg2 = " ↳ 🇺🇸 USD$ {usd_amt:,.2f} | 🇸🇬 SGD {sgd_amt:,.2f} | 🇵🇭 PHP$ {php_amt:,.1f} \n ↳ {axs_logo} AXS {axs_amt:.6f} | {eth_logo} ETH {eth_amt:.8f}".format(
+                sgd_amt=sgd_amt,
+                usd_amt=usd_amt,
+                php_amt=php_amt,
+                axs_logo=axs_logo,
+                axs_amt=axs_amt,
+                eth_logo=eth_logo,
+                eth_amt=eth_amt)
+            embed.add_field(name=amt_str, value=embed_msg2, inline=False)
+        else:
+            embed.add_field(name="7-Day Price Range",
+                            value="🇺🇸 USD$ {w_low:.2f}-{w_hi:.2f}".format(
+                                usd=usd_price,
+                                php=php_price,
+                                w_hi=week_high,
+                                w_low=week_low))
+        await message.channel.send(embed=embed)
+
+        # await message.channel.send(file=discord.File('images/slp_50.png'))
+        # await message.channel.send(output_msg)
+        # await message.channel.send(output_msg2)
 
     elif msg.startswith("$pricesgd"):
-      embed = priceSGD(eth_logo, axs_logo, slp_logo, msg)
-      await message.channel.send(embed=embed)
+        usd_price, php_price, eth_price, axs_price, slp_price = getSgdPrice()
+
+        embed = discord.Embed(
+            title="Singapore Dollars ($SGD)", color=0x766572).set_thumbnail(
+                url='https://i.ibb.co/8dZtBbM/Mask-Group-2.png')
+        # not sure why custom emoji not updating
+        embed_msg = "🇺🇸 USD$ {usd:.3f} | 🇵🇭 PHP$ {php:.2f} \n ETH {eth:.6f} | {axs_logo} AXS {axs:.4f} | {slp_logo} SLP {slp:.2f}".format(
+            usd=usd_price,
+            php=php_price,
+            eth=eth_price,
+            axs=axs_price,
+            slp=slp_price,
+            eth_logo=eth_logo,
+            axs_logo=axs_logo,
+            slp_logo=slp_logo)
+        # embed_msg = "USD$ {usd:.3f} | PHP$ {php:.2f} | SLP {slp:.4f} \n ETH {eth:.8f} | AXS {axs:.4f}".format(usd = usd_price, php = php_price,eth=eth_price,slp=slp_price,axs=axs_price)
+        embed.add_field(name='Current Price', value=embed_msg, inline=False)
+        embed.set_footer(text='💂 Hail Nephy.')
+        if msg != "$pricesgd":
+            amt = float(msg.split("$pricesgd ", 1)[1])
+            amt_str = str(amt) + " SGD"
+            usd_amt = usd_price * amt
+            php_amt = php_price * amt
+            axs_amt = axs_price * amt
+            eth_amt = eth_price * amt
+            slp_amt = slp_price * amt
+            embed_msg2 = " ↳ 🇺🇸 USD$ {usd_amt:,.2f} | 🇵🇭 PHP {php_amt:,.0f} \n ↳ {eth_logo} ETH {eth_amt:,.4f} | {axs_logo} AXS {axs_amt:.4f} | {slp_logo} SLP {slp_amt:.2f}".format(
+                usd_amt=usd_amt,
+                php_amt=php_amt,
+                eth_amt=eth_amt,
+                eth_logo=eth_logo,
+                axs_logo=axs_logo,
+                axs_amt=axs_amt,
+                slp_logo=slp_logo,
+                slp_amt=slp_amt)
+            # embed_msg2 = " ↳ USD$ {usd_amt:,.2f} | PHP {php_amt:,.0f} | SLP {slp_amt:.0f}\n ↳ ETH$ {eth_amt:.5f} | AXS {axs_amt:.3f}".format(usd_amt = usd_amt, php_amt = php_amt,slp_amt=slp_amt,eth_amt=eth_amt,axs_amt=axs_amt)
+            embed.add_field(name=amt_str, value=embed_msg2, inline=False)
+        # else:
+        # 	embed.add_field(name="7-Day Price Range", value="🇺🇸US$ {w_low:.2f}-{w_hi:.2f}".format(usd = usd_price, php = php_price, w_hi=week_high , w_low =week_low))
+        await message.channel.send(embed=embed)  #Get AXS market price
 
     elif msg.startswith("$priceusd"):
-      embed = priceUSD(eth_logo, axs_logo, slp_logo, msg)
-      await message.channel.send(embed=embed)
+        sgd_price, php_price, eth_price, axs_price, slp_price = getUsdPrice()
+        embed = discord.Embed(
+            title="United States Dollars ($USD)",
+            color=0x766572).set_thumbnail(
+                url='https://i.ibb.co/jksSvyY/Mask-Group-3.png')
+        embed_msg = "🇸🇬 SGD$ {sgd:.2f} | 🇵🇭 PHP$ {php:.0f} \n {eth_logo} ETH {eth:.6f} | {axs_logo} AXS {axs:.4f} | {slp_logo} SLP {slp:.2f}".format(
+            sgd=sgd_price,
+            php=php_price,
+            eth=eth_price,
+            axs=axs_price,
+            slp=slp_price,
+            eth_logo=eth_logo,
+            axs_logo=axs_logo,
+            slp_logo=slp_logo)
+        # embed_msg = "SGD$ {sgd:.2f} | PHP$ {php:.0f} | SLP {slp:.4f} \n ETH {eth:.8f} | AXS {axs:.4f}".format(sgd = sgd_price, php = php_price,eth=eth_price,slp=slp_price,axs=axs_price)
+        # embed_msg = "🇺🇸 USD$ {usd:.3f} | 🇵🇭 PHP$ {php:.2f} \n".format(usd = usd_price, php = php_price) + str(eth_logo) + " ETH {eth:.6f} | ".format(eth = eth_price) + str(axs_logo) + " AXS {axs:.4f} | ".format(axs = axs_price) + str(slp_logo) + " SLP {slp:.2f} | ".format(slp = slp_price)
+
+        embed.add_field(name='Current Price', value=embed_msg, inline=False)
+        embed.set_footer(text='💂 Hail Nephy.')
+        if msg != "$priceusd":
+            amt = int(msg.split("$priceusd ", 1)[1])
+            amt_str = str(amt) + " USD"
+            sgd_amt = sgd_price * amt
+            php_amt = php_price * amt
+            axs_amt = axs_price * amt
+            eth_amt = eth_price * amt
+            slp_amt = slp_price * amt
+            embed_msg2 = " ↳ 🇸🇬 SGD$ {sgd_amt:,.2f} | 🇵🇭 PHP {php_amt:,.0f} \n ↳ {eth_logo} ETH {eth_amt:,.4f} | {axs_logo} AXS {axs_amt:.4f} | {slp_logo} SLP {slp_amt:.2f}".format(
+                sgd_amt=sgd_amt,
+                php_amt=php_amt,
+                eth_amt=eth_amt,
+                eth_logo=eth_logo,
+                axs_logo=axs_logo,
+                axs_amt=axs_amt,
+                slp_logo=slp_logo,
+                slp_amt=slp_amt)
+            # embed_msg2 = " ↳ SGD$ {sgd_amt:,.2f} | PHP {php_amt:,.0f} | SLP {slp_amt:.0f}\n ↳ ETH$ {eth_amt:.5f} | AXS {axs_amt:.3f}".format(sgd_amt = usd_amt, php_amt = php_amt,slp_amt=slp_amt,eth_amt=eth_amt,axs_amt=axs_amt)
+            embed.add_field(name=amt_str, value=embed_msg2, inline=False)
+
+        await message.channel.send(embed=embed)  #Get AXS market price
 
     elif msg.startswith("$pricephp"):
-      embed = pricePHP(eth_logo, axs_logo, slp_logo, msg)
-      await message.channel.send(embed=embed)
+        usd_price, sgd_price, eth_price, axs_price, slp_price = getPhpPrice()
+
+        embed = discord.Embed(
+            title="Phillipines Pesos ($PHP)", color=0x766572).set_thumbnail(
+                url="https://i.ibb.co/ThcC6TM/Mask-Group-4.png")
+        embed_msg = "🇺🇸 USD$ {usd:.2f} | 🇸🇬 SGD$ {sgd:.2f} \n {eth_logo} ETH {eth:.6f} | {axs_logo} AXS {axs:.4f} | {slp_logo} SLP {slp:.2f}".format(
+            sgd=sgd_price,
+            usd=usd_price,
+            eth=eth_price,
+            axs=axs_price,
+            slp=slp_price,
+            eth_logo=eth_logo,
+            axs_logo=axs_logo,
+            slp_logo=slp_logo)
+        embed.add_field(name='Current Price', value=embed_msg, inline=False)
+        embed.set_footer(text='💂 Hail Nephy.')
+        if msg != "$pricephp":
+            amt = int(msg.split("$pricephp ", 1)[1])
+            amt_str = str(amt) + " PHP"
+            usd_amt = usd_price * amt
+            sgd_amt = sgd_price * amt
+            axs_amt = axs_price * amt
+            eth_amt = eth_price * amt
+            slp_amt = slp_price * amt
+            embed_msg2 = " ↳ 🇺🇸 USD$ {usd_amt:,.2f} | 🇸🇬 SGD {sgd_amt:,.2f} \n ↳ {eth_logo} ETH {eth_amt:,.4f} | {axs_logo} AXS {axs_amt:.4f} | {slp_logo} SLP {slp_amt:.2f}".format(
+                sgd_amt=sgd_amt,
+                usd_amt=usd_amt,
+                eth_amt=eth_amt,
+                eth_logo=eth_logo,
+                axs_logo=axs_logo,
+                axs_amt=axs_amt,
+                slp_logo=slp_logo,
+                slp_amt=slp_amt)
+            # embed_msg2 = " ↳ USD$ {usd_amt:,.2f} | SGD {sgd_amt:,.0f} | SLP {slp_amt:.0f}\n ↳ ETH$ {eth_amt:.5f} | AXS {axs_amt:.3f}".format(usd_amt = usd_amt, sgd_amt = sgd_amt,slp_amt=slp_amt,eth_amt=eth_amt,axs_amt=axs_amt)
+            embed.add_field(name=amt_str, value=embed_msg2, inline=False)
+        await message.channel.send(embed=embed)  #Get AXS market price
 
     elif msg.startswith("$priceaxs"):
-      embed = priceAXS(eth_logo, axs_logo, slp_logo, msg)
-      await message.channel.send(embed=embed)
+        sgd_price, usd_price, php_price, eth_price, slp_price, week_high, week_low = getAXSPrice(
+        )
+        embed = discord.Embed(
+            title="Axie Infinity Coin ($AXS)", color=0x01befe
+        ).set_thumbnail(
+            url=
+            'https://seeklogo.com/images/A/axie-infinity-axs-logo-57FE26A5DC-seeklogo.com.png'
+        )
+        embed_msg = "🇺🇸 USD$ {usd:.3f} | 🇵🇭 PHP$ {php:.2f} | 🇸🇬 SGD$ {sgd:.3f} \n {eth_logo} ETH {eth:.8f} | {slp_logo} SLP {slp:.0f} \n".format(
+            usd=usd_price,
+            php=php_price,
+            sgd=sgd_price,
+            eth=eth_price,
+            slp=slp_price,
+            eth_logo=eth_logo,
+            slp_logo=slp_logo)
+        embed.add_field(name='Current Price', value=embed_msg, inline=False)
+        embed.set_footer(text='💂 Hail Nephy.')
+        if msg != "$priceaxs":
+            amt = float(msg.split("$priceaxs ", 1)[1])
+            amt_str = str(amt) + " AXS {axs_logo}".format(axs_logo=axs_logo)
+            usd_amt = usd_price * amt
+            php_amt = php_price * amt
+            sgd_amt = sgd_price * amt
+            slp_amt = slp_price * amt
+            eth_amt = eth_price * amt
+            embed_msg2 = " ↳ 🇺🇸 USD$ {usd_amt:,.2f} | 🇵🇭 PHP$ {php_amt:,.0f}\n ↳ 🇸🇬 SGD$ {sgd:.3f} | ".format(
+                usd_amt=usd_amt, php_amt=php_amt,
+                sgd=sgd_amt) + str(eth_logo) + "ETH {eth_amt:,.4f}".format(
+                    eth_amt=eth_amt)
+            embed_msg2 = " ↳ 🇺🇸 USD$ {usd_amt:,.2f} | 🇸🇬 SGD {sgd_amt:,.2f} | 🇵🇭 PHP$ {php_amt:,.1f} \n ↳ {slp_logo} SLP {slp_amt:.0f} | {eth_logo} ETH {eth_amt:.4f}".format(
+                sgd_amt=sgd_amt,
+                usd_amt=usd_amt,
+                php_amt=php_amt,
+                slp_logo=slp_logo,
+                slp_amt=slp_amt,
+                eth_logo=eth_logo,
+                eth_amt=eth_amt)
+            embed.add_field(name=amt_str, value=embed_msg2, inline=False)
+        else:
+            embed.add_field(name="7-Day Price Range",
+                            value="🇺🇸 USD$ {w_low:.2f}-{w_hi:.2f}".format(
+                                usd=usd_price,
+                                php=php_price,
+                                w_hi=week_high,
+                                w_low=week_low))
+        # await message.channel.send(embed=embed)
+        # await message.channel.send(file=discord.File('images/axs_50.png'))
+        await message.channel.send(embed=embed)
 
     elif msg.startswith("$priceeth"):
-      embed = priceETH(eth_logo, axs_logo, slp_logo, msg)
-      await message.channel.send(embed=embed)
+        sgd_price, usd_price, php_price, slp_price, axs_price, week_high, week_low = getETHPrice(
+        )
+        embed = discord.Embed(
+            title="Ethereum ($ETH)", color=0x627eea).set_thumbnail(
+                url='https://i.ibb.co/y5NBSd2/eth-logo-1.png')
+        embed_msg = "🇺🇸 USD$ {usd:.0f} | 🇵🇭 PHP$ {php:.0f} | 🇸🇬 SGD$ {sgd:.0f} \n {slp_logo} SLP {slp:.0f} | {axs_logo} AXS {axs:.0f} \n".format(
+            usd=usd_price,
+            php=php_price,
+            sgd=sgd_price,
+            slp=slp_price,
+            axs=axs_price,
+            slp_logo=slp_logo,
+            axs_logo=axs_logo)
+        embed.add_field(name='Current Price', value=embed_msg, inline=False)
+        embed.set_footer(text='💂 Hail Nephy.')
+        if msg != "$priceeth":
+            amt = float(msg.split("$priceeth ", 1)[1])
+            amt_str = str(amt) + " ETH {eth_logo}".format(eth_logo=eth_logo)
+            usd_amt = usd_price * amt
+            php_amt = php_price * amt
+            sgd_amt = sgd_price * amt
+            axs_amt = axs_price * amt
+            slp_amt = slp_price * amt
+            embed_msg2 = " ↳ 🇺🇸 USD$ {usd_amt:,.0f} | 🇸🇬 SGD {sgd_amt:,.0f} | 🇵🇭 PHP$ {php_amt:,.0f} \n ↳ {axs_logo} AXS {axs_amt:.2f} | {slp_logo} SLP {slp_amt:.0f}".format(
+                sgd_amt=sgd_amt,
+                usd_amt=usd_amt,
+                php_amt=php_amt,
+                axs_logo=axs_logo,
+                axs_amt=axs_amt,
+                slp_logo=slp_logo,
+                slp_amt=slp_amt)
+            embed.add_field(name=amt_str, value=embed_msg2, inline=False)
+        else:
+            embed.add_field(name="7-Day Price Range",
+                            value="🇺🇸 USD$ {w_low:.2f}-{w_hi:.2f}".format(
+                                usd=usd_price, w_hi=week_high, w_low=week_low))
+        # await message.channel.send(embed=embed)
+        # await message.channel.send(file=discord.File('images/axs_50.png'))
+        await message.channel.send(embed=embed)
 
 #Get SLP from current
     elif msg.startswith("$roninslp"):
@@ -253,10 +501,38 @@ async def on_message(message):
         await message.channel.send(embed=getDailySLP(roninAdd))
 
     elif msg.startswith("$myslp"):
-      output, ronin = mySLP(message, nmcscholar, admin, nmcmanager, developer, moderator)
-      await message.channel.send(output)
-      if (ronin != 0):
-        await message.channel.send(embed = getDailySLP(ronin))
+        ronin = 0
+        # if self
+        if (len(msg.split(" ", 1)) == 1):
+          if(nmcscholar):
+            ronin = getGuildOwnScholarRonin(message.author.id)
+          else:
+            ronin = getGuildOwnRonin(message.author.id)
+          if (ronin == None):
+             await message.channel.send("User not found in NMC database!")
+          else:
+            await message.channel.send(
+                    "Let me make a quick trip down to Lunacia to retrieve that information!"
+                )
+            await message.channel.send(embed=getDailySLP(ronin))
+
+# if added a mention
+        else:
+            # if admin, get ronin of mentioned
+            if (admin or nmcmanager or developer or moderator or message.author.id == 772847165550755900):
+              mention = msg.split(" ", 1)[1]
+              if(len(list(filter(lambda x : x.name.lower() == "nmc scholar", message.mentions[0].roles)))>0):
+                ronin=getGuildMentionScholarRonin(message.mentions[0].id)
+              else:
+                ronin = getGuildMentionRonin(mention)
+              if (ronin == 0):
+                await message.channel.send("User not found in NMC database!")
+              else:
+                await message.channel.send("Let me make a quick trip down to Lunacia to retrieve that information!")
+                await message.channel.send(embed=getDailySLP(ronin))
+            else:
+                await message.channel.send("Mind your own business.")
+
 
     elif msg.startswith("$roninmmr"):
         await message.channel.send("Hold on, let me ask ma boy Neph.")
@@ -264,10 +540,34 @@ async def on_message(message):
         await message.channel.send(embed=getMMR(ronin))
 
     elif msg.startswith("$mymmr"):
-      output, ronin = myMMR(message, nmcscholar, admin, nmcmanager, developer, moderator)
-      await message.channel.send(output)
-      if (ronin != 0):
-        await message.channel.send(embed = getMMR(ronin))     
+      ronin = 0
+        # if self
+      if (len(msg.split(" ", 1)) == 1):
+        if(nmcscholar):
+          ronin = getGuildOwnScholarRonin(message.author.id)
+        else:
+          ronin = getGuildOwnRonin(message.author.id)
+        if (ronin == None):
+          await message.channel.send("User not found in NMC database!")
+        else:
+          await message.channel.send("Hold on, let me ask ma boy Neph.")
+          await message.channel.send(embed=getMMR(ronin))
+
+# if added a mention
+      else:
+        if (admin or nmcmanager or developer or moderator or message.author.id == 772847165550755900):
+          mention = msg.split(" ", 1)[1]
+          if(len(list(filter(lambda x : x.name.lower() == "nmc scholar", message.mentions[0].roles)))>0):
+            ronin=getGuildMentionScholarRonin(message.mentions[0].id)
+          else:
+            ronin = getGuildMentionRonin(mention)
+          if (ronin == 0):
+            await message.channel.send("User not found in NMC database!")
+          else:
+            await message.channel.send("Hold on, let me ask ma boy Neph.")
+            await message.channel.send(embed=getMMR(ronin))
+        else:
+          await message.channel.send("Mind your own business.")
 
     #Get SLP for entire Clan
     elif msg.startswith("$clanslp"):
@@ -385,15 +685,110 @@ async def on_message(message):
                 await message.channel.send(ronin)
 
     elif msg.startswith("$myaxielink"):
-      await message.channel.send(myAxieLink(message, nmcscholar))
+        ronin = 0
+        # if self
+        if (len(msg.split(" ", 1)) == 1):
+          if(nmcscholar):
+            ronin = getGuildOwnScholarRonin(message.author.id)
+          else:
+            ronin = getGuildOwnRonin(message.author.id)
+            if (ronin == None):
+                await message.channel.send("User not found in NMC database!")
+            else:
+                # await message.channel.send(ronin)
+                return await message.channel.send(
+                    'https://marketplace.axieinfinity.com/profile/' + ronin +
+                    '/axie/')
+
+# if added a mention
+        else:
+            mention = msg.split(" ", 1)[1]
+            ronin = getGuildMentionRonin(mention)
+            if (ronin == None):
+                await message.channel.send("User not found in NMC database!")
+            else:
+                return await message.channel.send(
+                    'https://marketplace.axieinfinity.com/profile/' + ronin +
+                    '/axie/')
 
     elif msg.startswith("$myaxie"):
-      output, axies = myAxie(message, nmcscholar)
-      if (output != ""):
-        await message.channel.send(output)
-      for axie in axies[:3]:
-          embed = getAxieImage(axie['id'], axie['class'], axie['image'])
+        ronin = 0
+# if self
+        if (len(msg.split(" ", 1)) == 1):
+          if(nmcscholar):
+            ronin = getGuildOwnScholarRonin(message.author.id)
+          else:
+            ronin = getGuildOwnRonin(message.author.id)
+            if (ronin == None):
+                await message.channel.send("User not found in NMC database!")
+                return      
+
+# if added a mention
+        else:
+            # mentionedMember = msg.split(" ", 1)[1]
+            if(len(list(filter(lambda x : x.name.lower() == "nmc scholar", message.mentions[0].roles)))>0):
+              ronin=getGuildMentionScholarRonin(message.mentions[0].id)
+            if (ronin == 0):
+                await message.channel.send("User not found in NMC database")
+                return
+                
+# first level check for noob axie message
+        ronin = roninAddConverter(ronin)
+        axies = getAxieDetail(ronin)
+        for axie in axies:
+          axieId = axie['id']
+          axieClass = axie['class']
+          axieImage = axie['image']
+          embed = getAxieImage(axieId, axieClass, axieImage)
           await message.channel.send(embed = embed)
+
+                
+    elif msg.startswith("$archivedmyaxie"):
+        ronin = 0
+        # if self
+        if (len(msg.split(" ", 1)) == 1):
+            ronin = getGuildOwnRonin(message.author.id)
+            if (ronin == None):
+                await message.channel.send("Who tf are you?")
+                return
+
+# if added a mention
+        else:
+            mention = msg.split(" ", 1)[1]
+            ronin = getGuildMentionRonin(mention)
+            print(ronin)
+            if (ronin == None):
+                await message.channel.send("User not found in NMC database")
+                return
+
+# first level check for noob axie message
+        ronin = roninAddConverter(ronin)
+        response = requests.request(
+            "GET",
+            "https://game-api.axie.technology/battlelog/" + str(ronin),
+            headers={},
+            data={})
+        json_data = json.loads(response.text)
+        if (ronin != None and json_data[0] != {}):
+            await message.channel.send('Here are your noob axies.')
+
+        recent_team = getRecentTeam(ronin)
+        if ((recent_team) == None):
+            error_embed = discord.Embed(title="Axies not found 😢")
+            error_embed.add_field(
+                name="Network Error",
+                value=
+                "There seems to be problem with Axie's server at the moment. Please check back in abit."
+            )
+            await message.channel.send(embed=error_embed)
+
+        for axie in recent_team:
+            await message.channel.send(
+                embed=getAxieImage(axie['id'], axie['class']))
+        # await message.channel.send(getRecentTeam(ronin))
+
+        # await message.channel.send(embed = getRecentTeam(ronin, message))
+
 
     elif msg.startswith('$asd'):
 
@@ -528,7 +923,7 @@ async def on_message(message):
                             value=embed_msg,
                             inline=False)
             embed.set_footer(text='💂 Hail Nephy.')
-            if msg != "$swapslp":
+            if msg != "$swapslr":
                 amt = float(msg.split("$swapslp ", 1)[1])
                 amt_str = str(amt) + " SLP"
                 php_amt = php_price * amt
