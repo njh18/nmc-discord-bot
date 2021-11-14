@@ -3,8 +3,9 @@ import asyncio
 import json
 from Builder.roninAddConverter import roninAddConverter
 
-async def onboard(message, admin, nmcmanager, developer): 
-  if (admin or nmcmanager or developer):
+async def onboard(message, roles): 
+  permissions = ['admin', 'nmcmanager', 'developer']
+  if (any(role in permissions for role in roles)):
       if (len(message.content.split(" ", 1)) == 1):
           await message.channel.send(
               "Can mention him/her after \'$onboard\'?")

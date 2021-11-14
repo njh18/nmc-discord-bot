@@ -2,12 +2,12 @@ from Builder.roninAddConverter import roninAddConverter
 from API.getAxieDetail import getAxieDetail
 from API.getGuildRonin import getGuildOwnRonin, getGuildOwnScholarRonin, getGuildMentionScholarRonin, getGuildMentionRonin
 
-def myAxie(message, nmcscholar):
+def myAxie(message, roles):
   ronin = 0
   output = ""
 # if self
   if (len(message.content.split(" ", 1)) == 1):
-    if(nmcscholar):
+    if('nmcscholar' in roles):
       ronin = getGuildOwnScholarRonin(message.author.id)
     else:
       ronin = getGuildOwnRonin(message.author.id)

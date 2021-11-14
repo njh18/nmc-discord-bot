@@ -2,23 +2,14 @@ import os
 import discord
 import json
 import aiocron
-import requests
 import asyncio
 from replit import db
-from Builder.urlBuilder import urlBuilder
-from Builder.roninAddConverter import roninAddConverter
 # Import Functions from API
 from API.getFloorAxiePrice import getFloorAxiePrice
-from API.getAxieDetail import getAxieDetail
 from API.getAxiePrice import getAxiePrice
 from API.getAxieImage import getAxieImage
-from API.getAxieSaleTotal import getAxieSaleTotal
-from API.getPriceTrend import getPriceTrend
-from API.getTokenPrice import getSLPPrice, getAXSPrice, getETHPrice, getSgdPrice, getUsdPrice, getPhpPrice
 from API.getDailySLP import getDailySLP
 from API.getClanSLP import getClanSLP
-from API.getGuildRonin import getGuildOwnRonin, getGuildMentionRonin, getGuildOwnScholarRonin, getGuildMentionScholarRonin
-from API.getAxieStatsParts import getAxieStatsParts
 from API.getLeaderboard import getLeaderboard
 from API.getRecentTeam import getRecentTeam
 from API.getMMR import getMMR
@@ -41,40 +32,21 @@ from Core.myScholarRonin import myScholarRonin
 from Core.dbUpdate import dbUpdate
 from Core.getAxieSearchUrl import getAxieSearchUrl
 from Core.cronJobNumber1 import cronJobNumber1
-from Core.cronJobNumber0 import cronJobNumber0
 from Core.swapSLP import swapSLP
 from Core.onboard import onboard
 # from sheets import loadDb
-import pandas as pd
 import pprint
-from discord.ext import commands
-from discord.utils import get
-from forex_python.converter import CurrencyRates
-from pycoingecko import CoinGeckoAPI
-import schedule
-import time
 
 client = discord.Client()
 bot_token = os.environ['TOKEN']
 
 # LOADS GOOGLE SHEET
 pp = pprint.PrettyPrinter()
-# df = loadDb()
-# pp.pprint(df)
-
-# to use pprint
-test = json.load((open("Database-filters.json")))
-# pp.pprint(test)
 
 # # initialise database (Only need to do it once if you change the file)
 # roninDb = json.load(open("Database-ronin.json"))
 # filtersDb = json.load(open("Database-filters.json"))
 # db.set_bulk({"roninAdd":roninDb["roninAdd"],"filters":filtersDb["filters"]})
-
-@aiocron.crontab("* * * * *")
-async def cronjob0():
-		# cronJobNumber0()	
-		return
 
 ## Bot-testing channel ID
 ## use https://crontab.guru/ to
@@ -85,11 +57,8 @@ async def cronjob1():
   await channel.send(embed=embed)
 # await channel.send('This message is sent every 10 minutes')
 
-
 # “At 8PM in UTC / 4PM SGT”
 CHANNEL_ID = 899694611541409835
-
-
 
 @aiocron.crontab('00 20 * * *')
 async def cronjob2():
@@ -100,15 +69,12 @@ async def cronjob2():
             await channel.send("Retrieving Clan Info!")
             await channel.send(embed=getClanSLP(clan))
 
-
 # when bot is ready to be use
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
 
-
 # bot = commands.Bot(command_prefix='$')
-
 
 # Main Function -> When someone sends a message
 @client.event
@@ -118,16 +84,16 @@ async def on_message(message):
         return
     msg = message.content
 
-    developer = lambda x : True if "developer" in [y.name.lower() for y in message.author.roles] else False
-    developer = developer(message)
-    nmcmanager = lambda x : True if "nmc manager" in [y.name.lower() for y in message.author.roles] else False
-    nmcmanager = nmcmanager(message)
-    moderator = lambda x : True if "moderator" in [y.name.lower() for y in message.author.roles] else False
-    moderator = moderator(message)
-    nmcscholar = lambda x : True if "nmc scholar" in [y.name.lower() for y in message.author.roles] else False
-    nmcscholar = nmcscholar(message)
-    admin = lambda x : True if message.author.top_role.permissions.administrator else False
-    admin = admin(message)  
+    # developer = lambda x : True if "developer" in [y.name.lower() for y in message.author.roles] else False
+    # developer = developer(message)
+    # nmcmanager = lambda x : True if "nmc manager" in [y.name.lower() for y in message.author.roles] else False
+    # nmcmanager = nmcmanager(message)
+    # moderator = lambda x : True if "moderator" in [y.name.lower() for y in message.author.roles] else False
+    # moderator = moderator(message)
+    # nmcscholar = lambda x : True if "nmc scholar" in [y.name.lower() for y in message.author.roles] else False
+    # nmcscholar = nmcscholar(message)
+    # admin = lambda x : True if message.author.top_role.permissions.administrator else False
+    # admin = admin(message)  
 
     roles = getRole(message)  
     
@@ -145,7 +111,7 @@ async def on_message(message):
       await message.channel.send(embed=embed)
 
     elif msg.startswith('$dbupdate'):
-      dbUpdate(admin, nmcmanager, developer)
+      dbUpdate(roles)
       await message.channel.send('Guild Database Updated')
 
     # Maybe can remove
@@ -190,7 +156,7 @@ async def on_message(message):
         await message.channel.send(embed=getDailySLP(roninAdd))
 
     elif msg.startswith("$myslp"):
-      output, ronin = mySLP(message, nmcscholar, admin, nmcmanager, developer, moderator)
+      output, ronin = mySLP(message, roles)
       await message.channel.send(output)
       if (ronin != 0):
         await message.channel.send(embed = getDailySLP(ronin))
@@ -201,15 +167,15 @@ async def on_message(message):
         await message.channel.send(embed=getMMR(ronin))
 
     elif msg.startswith("$mymmr"):
-      output, ronin = myMMR(message, nmcscholar, admin, nmcmanager, developer, moderator)
+      output, ronin = myMMR(message, roles)
       await message.channel.send(output)
       if (ronin != 0):
         await message.channel.send(embed = getMMR(ronin))     
 
     #Get SLP for entire Clan
     elif msg.startswith("$clanslp"):
-        if (not (admin == True or moderator == True or developer == True
-                 or nmcmanager == True) == True):
+        permissions = ['admin', 'nmcmanager', 'developer', 'moderator']
+        if (not any(role in permissions for role in roles)):
             return
         clan = msg.split("$clanslp ", 1)[1]
         await message.channel.send("Yes sir I am a slave..")
@@ -218,8 +184,8 @@ async def on_message(message):
 
     #Get SLP for entire Clan
     elif msg.startswith("$guildavgslp"):
-        if (not (admin == True or moderator == True or developer == True
-                 or nmcmanager == True) == True):
+        permissions = ['admin', 'nmcmanager', 'developer', 'moderator']
+        if (not any(role in permissions for role in roles)):
             return
         min_slp = msg.split("$guildavgslp ", 1)[1]
         await message.channel.send(
@@ -238,10 +204,10 @@ async def on_message(message):
       await message.channel.send(output)
 
     elif msg.startswith("$myaxielink"):
-      await message.channel.send(myAxieLink(message, nmcscholar, admin, nmcmanager, developer, moderator))
+      await message.channel.send(myAxieLink(message, roles))
 
     elif msg.startswith("$myaxie"):
-      output, axies = myAxie(message, nmcscholar)
+      output, axies = myAxie(message, roles)
       if (output != ""):
         await message.channel.send(output)
       for axie in axies[:3]:
@@ -252,7 +218,7 @@ async def on_message(message):
       asyncio.get_event_loop().create_task(swapSLP(message, eth_logo, axs_logo))
 
     elif msg.startswith('$onboard'):
-      asyncio.get_event_loop().create_task(onboard(message, admin, nmcmanager, developer))
+      asyncio.get_event_loop().create_task(onboard(message, roles))
 #         if (admin or nmcmanager or developer):
 #             if (len(msg.split(" ", 1)) == 1):
 #                 await message.channel.send(
@@ -481,7 +447,7 @@ async def on_message(message):
 
     # Anime and Fun
     elif msg.startswith('$hashira'):
-        if (admin):
+        if ('admin' in roles):
             await message.channel.send(
                 'https://tenor.com/view/tomioka-hashira-gurenge-kimetsu-no-gif-18003742'
             )
@@ -494,7 +460,7 @@ async def on_message(message):
             title=" Love of Nephy's life ❤️", color=0xf60ea1))
 
     elif msg.startswith('$rengokusan'):
-        if (admin):
+        if ('admin' in roles):
             await message.channel.send(
                 '  https://tenor.com/view/demon-slayer-movie-rengoku-sword-anime-gif-15690515'
             )
@@ -526,31 +492,6 @@ async def on_message(message):
 
     elif msg.startswith('$dsa'):
 
-      print(developer)
-      print(nmcmanager)
-      print(moderator)
-      print(nmcscholar)
-      print(admin)
-      # admin = False
-      # developer = False
-      # nmcmanager = False
-      # moderator = False
-      # nmcscholar = False
-
-      # if "developer" in [y.name.lower() for y in message.author.roles]:
-      #   developer = True
-      # if "nmc manager" in [y.name.lower() for y in message.author.roles]:
-      #   nmcmanager = True
-      # if "moderator" in [y.name.lower() for y in message.author.roles]:
-      #   moderator = True
-      # if "nmc scholar" in [y.name.lower() for y in message.author.roles]:
-      #   nmcscholar = True
-      # admin = message.author.top_role.permissions.administrator ? True : False
-      #   admin = True
-    
-        
-      # eth_logo = list(filter(lambda x : x.id == 906217466781397022, client.emojis))[0]
-      # axs_logo = list(filter(lambda x : x.id == 906989187620798505, client.emojis))[0]
-      # slp_logo = list(filter(lambda x : x.id == 902080377710059530, client.emojis))[0]
-      
+      print(roles)
+         
 client.run(bot_token)

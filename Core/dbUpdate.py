@@ -1,8 +1,9 @@
 import json
 from replit import db
 
-def dbUpdate(admin, nmcmanager, developer):
-  if (admin or nmcmanager or developer):
+def dbUpdate(roles):
+  permissions = ['admin', 'nmcmanager', 'developer']
+  if (any(role in permissions for role in roles)):
       roninDb = json.load(open("Database-ronin.json"))
       filtersDb = json.load(open("Database-filters.json"))
       db.set_bulk({
