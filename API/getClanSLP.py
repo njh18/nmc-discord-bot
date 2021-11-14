@@ -2,7 +2,7 @@ import requests
 import os
 import json
 import discord
-from roninAddConverter import roninAddConverter
+from Builder.roninAddConverter import roninAddConverter
 from replit import db
 import sys
 
@@ -58,6 +58,7 @@ def getClanSLP(clan):
 	except:
 		embed=discord.Embed(title="Oops!", color = discord.Color.light_gray())
 		embed.add_field(name="Error", value=sys.exc_info()[0])
+		print(sys.exc_info())
 		return embed
     # print("sys.exc_info()[0], "occurred.")
 		

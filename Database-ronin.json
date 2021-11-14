@@ -85,9 +85,9 @@
       {
         "userId": 893349439572430889,
         "managerShare": 5,
-        "eth": "ronin:997212b3fced1d0d8af99149ede85ebb17d401b3",
+        "eth": "",
         "name": "JerLone",
-        "scholarRonin": "",
+        "scholarRonin": "ronin:997212b3fced1d0d8af99149ede85ebb17d401b3",
         "investorPercentage": "",
         "investorRonin": ""
       },
@@ -341,9 +341,9 @@
       {
         "userId": 882259490056077464,
         "managerShare": 5,
-        "eth": "ronin:cdee95a058572f4c64badcaaccfa447abcd43cb7",
+        "eth": "",
         "name": "UnGoodyi",
-        "scholarRonin": "",
+        "scholarRonin": "ronin:cdee95a058572f4c64badcaaccfa447abcd43cb7",
         "investorPercentage": "",
         "investorRonin": ""
       },
@@ -389,6 +389,15 @@
         "eth": "",
         "name": "dendi",
         "scholarRonin": "ronin:f4eae80445f548ebcc957cf27cd247560244731e",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+      {
+        "userId": 764310731558223893,
+        "managerShare": 5,
+        "eth": "",
+        "name": "Dwin",
+        "scholarRonin": "ronin:b13a5ff6c80250eedaf664e34514255bd083aed6",
         "investorPercentage": "",
         "investorRonin": ""
       }

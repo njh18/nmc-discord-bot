@@ -1,6 +1,6 @@
-from roninAddConverter import roninAddConverter
+from Builder.roninAddConverter import roninAddConverter
 from API.getAxieDetail import getAxieDetail
-from API.getGuildRonin import getGuildOwnRonin, getGuildOwnScholarRonin, getGuildMentionScholarRonin
+from API.getGuildRonin import getGuildOwnRonin, getGuildOwnScholarRonin, getGuildMentionScholarRonin, getGuildMentionRonin
 
 def myAxie(message, nmcscholar):
   ronin = 0
@@ -17,10 +17,12 @@ def myAxie(message, nmcscholar):
 
 # if added a mention
   else:
-      # mentionedMember = msg.split(" ", 1)[1]
+      mention = message.content.split(" ", 1)[1]
       if(len(list(filter(lambda x : x.name.lower() == "nmc scholar", message.mentions[0].roles)))>0):
         ronin=getGuildMentionScholarRonin(message.mentions[0].id)
-      if (ronin == 0):
+      else:
+        ronin = getGuildMentionRonin(mention)
+        if (ronin == 0):
           output = "User not found in NMC database"
           return
           

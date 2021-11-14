@@ -2,7 +2,7 @@ import requests
 import os
 import json
 import discord
-from roninAddConverter import roninAddConverter
+from Builder.roninAddConverter import roninAddConverter
 from replit import db
 import sys
 
