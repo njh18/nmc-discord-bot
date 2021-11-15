@@ -3,7 +3,7 @@ import asyncio
 import json
 from Builder.roninAddConverter import roninAddConverter
 
-async def onboard(message, roles): 
+async def onboard(message, roles, client): 
   permissions = ['admin', 'nmcmanager', 'developer']
   if (any(role in permissions for role in roles)):
       if (len(message.content.split(" ", 1)) == 1):
@@ -75,7 +75,7 @@ async def onboard(message, roles):
               print('waiting for ronin input')
               # await asyncio.sleep(5)
               try:
-                  msg2 = await discord.Client().wait_for('message', timeout=5)
+                  msg2 = await client.wait_for('message', timeout=5)
               except:
                   print('waited 5s for ronin input')
                   check_timer += 5

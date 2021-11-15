@@ -3,6 +3,7 @@ import discord
 import json
 import aiocron
 import asyncio
+import math
 from replit import db
 # Import Functions from API
 from API.getFloorAxiePrice import getFloorAxiePrice
@@ -34,6 +35,7 @@ from Core.getAxieSearchUrl import getAxieSearchUrl
 from Core.cronJobNumber1 import cronJobNumber1
 from Core.swapSLP import swapSLP
 from Core.onboard import onboard
+from Core.leaderboard import leaderboard
 # from sheets import loadDb
 import pprint
 
@@ -84,17 +86,6 @@ async def on_message(message):
         return
     msg = message.content
 
-    # developer = lambda x : True if "developer" in [y.name.lower() for y in message.author.roles] else False
-    # developer = developer(message)
-    # nmcmanager = lambda x : True if "nmc manager" in [y.name.lower() for y in message.author.roles] else False
-    # nmcmanager = nmcmanager(message)
-    # moderator = lambda x : True if "moderator" in [y.name.lower() for y in message.author.roles] else False
-    # moderator = moderator(message)
-    # nmcscholar = lambda x : True if "nmc scholar" in [y.name.lower() for y in message.author.roles] else False
-    # nmcscholar = nmcscholar(message)
-    # admin = lambda x : True if message.author.top_role.permissions.administrator else False
-    # admin = admin(message)  
-
     roles = getRole(message)  
     
     eth_logo = list(filter(lambda x : x.id == 906217466781397022, client.emojis))[0]
@@ -105,6 +96,12 @@ async def on_message(message):
     if msg.startswith('$floor-axies'):
         quote = getFloorAxiePrice()
         await message.channel.send(quote)
+
+    elif msg.startswith('$morale'):
+      # base = msg.split("$crit ", 1)[1]
+      morale = msg.split("$morale ", 1)[1]
+      dmg = math.sqrt(int(morale)) * 10 + int(morale) * 0.4 - 18
+      await message.channel.send("crit damage : " + str(dmg))
 
     elif msg.startswith('$forceAP'):
       embed = forceAP(eth_logo)
@@ -218,232 +215,10 @@ async def on_message(message):
       asyncio.get_event_loop().create_task(swapSLP(message, eth_logo, axs_logo))
 
     elif msg.startswith('$onboard'):
-      asyncio.get_event_loop().create_task(onboard(message, roles))
-#         if (admin or nmcmanager or developer):
-#             if (len(msg.split(" ", 1)) == 1):
-#                 await message.channel.send(
-#                     "Can mention him/her after \'$onboard\'?")
-#             else:
-#                 mention = msg.split(" ", 1)[1].replace('@', '').replace(
-#                     '<', '').replace('>', '').replace('!', '')
-#                 print(mention)
-
-#                 clan_emojis = [
-#                     '\N{Palm Tree}', '\N{Last Quarter Moon with Face}',
-#                     '\N{Hot Beverage}', '\N{Glowing Star}'
-#                 ]
-#                 clan_names = [
-#                     'oasis',
-#                     'lunar',
-#                     'kopi',
-#                     'sol',
-#                 ]
-
-#                 # Check Clan
-
-#                 embed = discord.Embed(title="This paikia what clan one?",
-#                                       color=0x66a1a5)
-#                 message1 = await message.channel.send(embed=embed)
-#                 for emoji in clan_emojis:
-#                     await message1.add_reaction(emoji)
-
-#                 max_timer = 30
-#                 check_timer = 0
-
-#                 clan_emoji = 0
-#                 clan = 0
-
-#                 while (check_timer < max_timer):
-#                     print('waiting to react to clan')
-#                     await asyncio.sleep(5)
-#                     message1fetch = await message.channel.fetch_message(
-#                         message1.id)
-#                     print('waited to react to clan')
-#                     for reaction in message1fetch.reactions:
-#                         print(reaction.count)
-#                         if (reaction.count == 2):
-#                             clan_emoji = reaction.emoji
-#                             clan = clan_names[clan_emojis.index(clan_emoji)]
-#                             # await message.channel.send('New scholar is from ' + clan + ' clan.')
-#                             await message.channel.send('\n Input received : ' +
-#                                                        clan.capitalize() +
-#                                                        ' clan. \n')
-#                             check_timer = max_timer
-#                     check_timer += 5
-#                     print(check_timer)
-#                 if (clan == 0):
-#                     message1 = await message.channel.send(
-#                         'No input received. Please try to \'$onboard\' again.')
-#                     return
-
-# # Check Clan End
-# # Check Ronin
-
-#                 embed = discord.Embed(title="Can paste ronin pls",
-#                                       color=0x66a1a5)
-#                 message2 = await message.channel.send(embed=embed)
-
-#                 check_timer = 0
-#                 ronin = 0
-#                 while (check_timer < max_timer):
-#                     print('waiting for ronin input')
-#                     # await asyncio.sleep(5)
-#                     try:
-#                         msg2 = await client.wait_for('message', timeout=5)
-#                     except:
-#                         print('waited 5s for ronin input')
-#                         check_timer += 5
-#                         print(check_timer)
-#                         continue
-#                     print(msg2.content)
-#                     message2fetch = msg2.content
-#                     # message2fetch = await message.channel.fetch_message(message2)
-
-#                     if (message2fetch.startswith('ronin:')):
-#                         ronin = message2fetch
-#                         print(ronin)
-#                         break
-#                     elif (message2fetch.startswith('0x')):
-#                         ronin = roninAddConverter(message2fetch)
-#                         print(ronin)
-#                         break
-#                     else:
-#                         await message.channel.send(
-#                             'Eh wrong format. Paste again.')
-#                         check_timer = 0
-#                         print('timer reset')
-#                     print(check_timer)
-#                 if (ronin == 0):
-#                     message1 = await message.channel.send(
-#                         'Eh you don\'t know how to talk is it? Sorry hor go try from beginning - \'$onboard\' again.'
-#                     )
-#                     return
-#                 else:
-#                     print("clan : " + clan)
-#                     print("ronin : " + str(ronin))
-#                     new_scholar = {
-#                         "userId": int(mention),
-#                         "managerShare": 5,
-#                         "eth": "",
-#                         "name": str(message.mentions[0].name),
-#                         "scholarRonin": ronin,
-#                         "investorPercentage": "",
-#                         "investorRonin": ""
-#                     }
-
-#                 confirm_emojis = [
-#                     '\N{White Heavy Check Mark}', '\N{Cross Mark}'
-#                 ]
-
-#                 embed = discord.Embed(
-#                     title="Kindly confirm the details of new scholar",
-#                     color=0x66a1a5).add_field(
-#                         name="Discord Name : ",
-#                         value=str(message.mentions[0].name),
-#                         inline=False).add_field(
-#                             name="Clan : ",
-#                             value=clan.capitalize(),
-#                             inline=False).add_field(
-#                                 name="User ID : ",
-#                                 value=str(mention),
-#                                 inline=False).add_field(
-#                                     name="Ronin Address : ",
-#                                     value=ronin,
-#                                     inline=False)
-#                 message3 = await message.channel.send(embed=embed)
-#                 for emoji in confirm_emojis:
-#                     await message3.add_reaction(emoji)
-
-#                 max_timer = 30
-#                 check_timer = 0
-
-#                 clan_emoji = 0
-#                 scholarConfirmed = False
-
-#                 while (check_timer < max_timer):
-#                     print('waiting to confirm')
-#                     await asyncio.sleep(5)
-#                     message3fetch = await message.channel.fetch_message(
-#                         message3.id)
-#                     print('waited to confirm')
-#                     for reaction in message3fetch.reactions:
-#                         if (reaction.count == 2):
-#                             if (reaction.emoji == '\N{White Heavy Check Mark}'
-#                                 ):
-#                                 # scholarConfirmed=True
-#                                 with open("Database-ronin.json",
-#                                           "r") as jsonFile:
-#                                     dbRonin = json.load(jsonFile)
-#                                 dbRonin["roninAdd"][clan].append(new_scholar)
-#                                 with open("Database-ronin.json",
-#                                           "w") as jsonFile:
-#                                     json.dump(dbRonin, jsonFile)
-#                                 await message.channel.send(embed=discord.Embed(
-#                                     title=
-#                                     "Success! Scholar has been onboarded to NMC Database.",
-#                                     color=0x1abb9c))
-#                                 return
-#                             elif (reaction.emoji == '\N{Cross Mark}'):
-#                                 await message.channel.send(embed=discord.Embed(
-#                                     title=
-#                                     "Scholar Onboarding Cancelled. Please try \'$onboard\' again.",
-#                                     color=0xec4543))
-#                                 return
-#                             check_timer = max_timer
-#                     check_timer += 5
-#                     print(check_timer)
-#                 if (clan == 0):
-#                     message1 = await message.channel.send(
-#                         'No input received. Please try to \'$onboard\' again.')
-#                     return
+      asyncio.get_event_loop().create_task(onboard(message, roles, client))
 
     elif msg.startswith("$leaderboard"):
-        offset = 1
-        limit = 2
-        print(len(msg.split(' ')))
-        if (len(msg.split(' ')) > 1):
-            params = msg.split("$leaderboard ", 1)[1]
-            offset = int(params.split(',')[0]) - 1
-            limit = params.split(',')[1]
-        rank = offset + 1
-
-        # getAxieImage embed format
-        # for ranker in getLeaderboard(offset,limit):
-        # 	await message.channel.send("Rank " + str(rank) + "\n " + "https://axie.zone/profile?ron_addr=" + str(ranker), embed=None)
-        # 	for axie in getRecentTeam(ranker):
-        # 		await message.channel.send(embed = getAxieImage(axie['id'],axie['class']))
-        # 	rank += 1
-
-        embed = 0
-        axie_part = ''
-        axie_stat = ''
-        for ranker in getLeaderboard(offset, limit):
-            embed = discord.Embed(title="Rank " + str(rank),
-                                  url="https://axie.zone/profile?ron_addr=" +
-                                  str(ranker))
-            for axie in getRecentTeam(ranker):
-                axie_part = ''
-                axie_stat = ''
-                for stat in axie['statsParts']:
-                    if ('name' in stat):
-                        axie_part += stat['name'] + ' | '
-                    if ('card' in stat):
-                        axie_part += stat['card']
-                        axie_part = axie_part + '\n'
-                    if ('stat' in stat):
-                        axie_stat += stat['stat'].upper() + ':'
-                    if ('value' in stat):
-                        axie_stat += str(stat['value']) + ', '
-                axie_stat = axie_stat[0:-2]
-                axie_part += '\n' + axie_stat
-                embed.add_field(name=axie['class'],
-                                value=axie_part,
-                                inline=True)
-            rank += 1
-            await message.channel.send(embed=embed)
-            # print(getRecentTeam(ranker))
-            # await message.channel.send(getRecentTeam(ranker))
-            # print(getAxieImage(ranker['']))
+      asyncio.get_event_loop().create_task(leaderboard(message))
 
     # Anime and Fun
     elif msg.startswith('$hashira'):
@@ -491,7 +266,6 @@ async def on_message(message):
         print(roninAddDb["Oasis"])
 
     elif msg.startswith('$dsa'):
-
       print(roles)
          
 client.run(bot_token)
