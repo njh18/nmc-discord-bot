@@ -50,7 +50,6 @@ async def offboard(message, roles):
         with open("Database-ronin.json", "r") as jsonFile:
           dbRonin = json.load(jsonFile)
         for scholar in dbRonin['roninAdd'][clan]:
-          print(scholar["userId"])
           if (scholar['userId'] == mentionID):
             confirm_emojis = ['\N{White Heavy Check Mark}', '\N{Cross Mark}']
             embed = discord.Embed(
@@ -85,7 +84,7 @@ async def offboard(message, roles):
               for reaction in message2fetch.reactions:
                   if (reaction.count == 2):
                     if (reaction.emoji == '\N{White Heavy Check Mark}'):
-                      del scholar
+                      dbRonin['roninAdd'][clan].pop(dbRonin['roninAdd'][clan].index(scholar))
                       with open("Database-ronin.json", "w") as jsonFile:
                         dbRonin = json.dump(dbRonin, jsonFile)
                       await message.channel.send(embed=discord.Embed(
@@ -103,7 +102,7 @@ async def offboard(message, roles):
               check_timer += 5
               print(check_timer)
             if (clan == 0):
-              message1 = await message.channel.send('No input received. Please try to \'$onboard\' again.')
+              message1 = await message.channel.send('No input received. Please try to \'$offboard\' again.')
 
         await message.channel.send('Scholar not found!')
         return
