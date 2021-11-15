@@ -11,8 +11,6 @@ from API.getAxiePrice import getAxiePrice
 from API.getAxieImage import getAxieImage
 from API.getDailySLP import getDailySLP
 from API.getClanSLP import getClanSLP
-from API.getLeaderboard import getLeaderboard
-from API.getRecentTeam import getRecentTeam
 from API.getMMR import getMMR
 from API.getGuildAverageSLP import getGuildAverageSLP
 from API.getRole import getRole
@@ -35,6 +33,7 @@ from Core.getAxieSearchUrl import getAxieSearchUrl
 from Core.cronJobNumber1 import cronJobNumber1
 from Core.swapSLP import swapSLP
 from Core.onboard import onboard
+from Core.offboard import offboard
 from Core.leaderboard import leaderboard
 # from sheets import loadDb
 import pprint
@@ -216,6 +215,9 @@ async def on_message(message):
 
     elif msg.startswith('$onboard'):
       asyncio.get_event_loop().create_task(onboard(message, roles, client))
+
+    elif msg.startswith('$offboard'):
+      asyncio.get_event_loop().create_task(offboard(message, roles))
 
     elif msg.startswith("$leaderboard"):
       asyncio.get_event_loop().create_task(leaderboard(message))
