@@ -157,15 +157,6 @@
     ],
     "lunar": [
       {
-        "userId": 694130150236749864,
-        "managerShare": 5,
-        "eth": "",
-        "name": "jingyi",
-        "scholarRonin": "ronin:e06d4be93c8742e4fe7d8e1e7e3e6180c50f1087",
-        "investorPercentage": "",
-        "investorRonin": ""
-      },
-      {
         "userId": 772847165550755900,
         "managerShare": 5,
         "eth": "",
@@ -319,11 +310,11 @@
         "investorRonin": ""
       },
       {
-        "userId": 731163325760536722,
+        "userId": 801567567688368129,
         "managerShare": 5,
         "eth": "",
-        "name": "gawwee12345",
-        "scholarRonin": "ronin:68d2241a2e6405240c5e110098c2d6ac87928600",
+        "name": "gin",
+        "scholarRonin": "ronin:e06d4be93c8742e4fe7d8e1e7e3e6180c50f1087",
         "investorPercentage": "",
         "investorRonin": ""
       }
@@ -367,7 +358,7 @@
       },
       {
         "userId": 893351917114261574,
-        "managerShare": 0,
+        "managerShare": 5,
         "eth": "",
         "name": "Veno_van",
         "scholarRonin": "ronin:ba187bbdc0f5259b3ad793039ffc6f78fc2f1f2b",
@@ -376,7 +367,7 @@
       },
       {
         "userId": 761825209556140092,
-        "managerShare": 0,
+        "managerShare": 5,
         "eth": "",
         "name": "tpen",
         "scholarRonin": "ronin:5ef0b1acd955b6296b1db7aae3c2cf021f7e4ac3",
@@ -384,8 +375,17 @@
         "investorRonin": ""
       },
       {
+        "userId": 557859996994371597,
+        "managerShare": 5,
+        "eth": "",
+        "name": "Ranielo",
+        "scholarRonin": "ronin:ae9e00157531f762e8754391b7b7211e6c014e27",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+      {
         "userId": 707465069579075624,
-        "managerShare": 0,
+        "managerShare": 5,
         "eth": "",
         "name": "aaaarroooon",
         "scholarRonin": "ronin:0e769abbaaef3469995c1fde1c57089507421fa2",
@@ -394,7 +394,7 @@
       },
       {
         "userId": 887656480428425226,
-        "managerShare": 0,
+        "managerShare": 5,
         "eth": "",
         "name": "dendi",
         "scholarRonin": "ronin:f4eae80445f548ebcc957cf27cd247560244731e",
@@ -564,6 +564,15 @@
         "eth": "",
         "name": "BIGTITSENPAI",
         "scholarRonin": "ronin:b54b424b99667ffc83645731009690c713f61a44",
+        "investorPercentage": "",
+        "investorRonin": ""
+      },
+      {
+        "userId": 731163325760536722,
+        "managerShare": 5,
+        "eth": "",
+        "name": "gawwee12345",
+        "scholarRonin": "ronin:68d2241a2e6405240c5e110098c2d6ac87928600",
         "investorPercentage": "",
         "investorRonin": ""
       }

@@ -175,8 +175,14 @@ async def on_message(message):
             return
         clan = msg.split("$clanslp ", 1)[1]
         await message.channel.send("Yes sir I am a slave..")
-        await message.channel.send(embed=getClanSLP(clan))
-        # await message.channel.send('nah, 好了. ' + clan + ' Clan MMR & SLP info retrieved.')
+        embed, clanScholar, clanSlp, clanSlpToday, clanSlpYtd, clanFee = getClanSLP(clan)
+        await message.channel.send(embed=embed)
+        await message.channel.send("👨‍👩‍👧‍👦 No. of Scholars : {clanScholar} \n💰 Total SLP Today : {clanSlpToday}  |  Total SLP Yesterday : {clanSlpYtd} \n📜 Clan Total SLP : {clanSlp}  |  Server Fee : {clanFee}".format(clanScholar=str(clanScholar), clanSlpToday=str(clanSlpToday), clanSlpYtd=str(clanSlpYtd), clanSlp=str(clanSlp), clanFee=str(clanFee)))
+        # await message.channel.send("No. of Scholars : " + str(clanScholar))
+        # await message.channel.send("Total SLP Today : " + str(clanSlpToday))
+        # await message.channel.send("Total SLP : " + str(clanSlp))
+        # await message.channel.send("Total SLP Yesterday : " + clanSlpYtd)
+
 
     #Get SLP for entire Clan
     elif msg.startswith("$guildavgslp"):
@@ -198,6 +204,17 @@ async def on_message(message):
     elif msg.startswith("$myscholarronin"):
       output = myScholarRonin(message)
       await message.channel.send(output)
+
+    elif msg.startswith("$whoseronin"):
+      ronin = msg.split(" ", 1)[1]
+      clans = ['oasis', 'kopi', 'lunar', 'sol', 'singapore']
+      print(ronin)
+      for clan in clans:
+        for user in db["roninAdd"][clan]:
+          if (user['scholarRonin']==ronin):
+            print('found')
+            await message.channel.send(user['name'])
+      print()
 
     elif msg.startswith("$myaxielink"):
       await message.channel.send(myAxieLink(message, roles))

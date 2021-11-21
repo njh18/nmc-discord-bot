@@ -1,5 +1,6 @@
 import requests
 import os
+import math
 import json
 import discord
 from Builder.roninAddConverter import roninAddConverter
@@ -24,6 +25,12 @@ def getClanSLP(clan):
 	embed = discord.Embed(title = clan.capitalize() +  " clan's Daily Updates", color = color)
 
 	roninAddDb = json.loads(db.get_raw("roninAdd"))[clan.lower()]
+
+	clanScholar = 0
+	clanSlp = 0
+	clanSlpToday = 0
+	clanSlpYtd = 0
+	clanFee = 0
 
 	try:
 		for user in roninAddDb:
@@ -51,10 +58,15 @@ def getClanSLP(clan):
 				avg = json_data['slp']['average']
 				totalSlp = json_data['slp']['total']
 				mmr = json_data['leaderboard']['elo']
+				clanScholar += 1
+				clanSlp += totalSlp
+				clanSlpToday += todaySlp
+				clanSlpYtd += ytdSlp
+				clanFee = math.ceil(0.05*totalSlp)
 
 			embed.add_field(name = thename, value = "Today's SLP: " + str(todaySlp) + ", Ytd SLP: " + str(ytdSlp) + ", Average SLP: " + str(avg) + ", Total SLP: " + str(totalSlp) + ", MMR: " + str(mmr) ,inline=False)
 
-		return embed
+		return embed, clanScholar, clanSlp, clanSlpToday, clanSlpYtd, clanFee
 	except:
 		embed=discord.Embed(title="Oops!", color = discord.Color.light_gray())
 		embed.add_field(name="Error", value=sys.exc_info()[0])
