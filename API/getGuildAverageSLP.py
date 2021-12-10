@@ -32,9 +32,9 @@ def getGuildAverageSLP(min_slp):
 				response = requests.request("GET", url, headers=headers, data={})
 
 				json_data = json.loads(response.text)
-				print(str(json_data['leaderboard']['name']) + ' - Average SLP : ' + str(json_data['slp']['average']))
-				thename = json_data['leaderboard']['name']
-
+        
+				thename = "???" if json_data['leaderboard']['name'] == None else str(json_data['leaderboard']['name'])
+				print(str(thename) + ' - Average SLP : ' + str(json_data['slp']['average']))
 				if thename is None:
 					break 
 				elif json_data['slp']['average'] == None:

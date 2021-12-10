@@ -175,8 +175,10 @@ async def on_message(message):
             return
         clan = msg.split("$clanslp ", 1)[1]
         await message.channel.send("Yes sir I am a slave..")
-        embed, clanScholar, clanSlp, clanSlpToday, clanSlpYtd, clanFee = getClanSLP(clan)
-        await message.channel.send(embed=embed)
+        embed_list, clanScholar, clanSlp, clanSlpToday, clanSlpYtd, clanFee = getClanSLP(clan)
+        # await message.channel.send(embed=embed)
+        for embedz in embed_list:
+          await message.channel.send(embed=embedz)
         await message.channel.send("👨‍👩‍👧‍👦 No. of Scholars : {clanScholar} \n💰 Total SLP Today : {clanSlpToday}  |  Total SLP Yesterday : {clanSlpYtd} \n📜 Clan Total SLP : {clanSlp}  |  Server Fee : {clanFee}".format(clanScholar=str(clanScholar), clanSlpToday=str(clanSlpToday), clanSlpYtd=str(clanSlpYtd), clanSlp=str(clanSlp), clanFee=str(clanFee)))
         # await message.channel.send("No. of Scholars : " + str(clanScholar))
         # await message.channel.send("Total SLP Today : " + str(clanSlpToday))
@@ -186,7 +188,8 @@ async def on_message(message):
 
     #Get SLP for entire Clan
     elif msg.startswith("$guildavgslp"):
-        permissions = ['admin', 'nmcmanager', 'developer', 'moderator']
+        print(roles)
+        permissions = ['admin', 'nmcmanager', 'developer', 'moderator','junior moderator']
         if (not any(role in permissions for role in roles)):
             return
         min_slp = msg.split("$guildavgslp ", 1)[1]

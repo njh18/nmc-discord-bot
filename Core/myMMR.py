@@ -15,8 +15,8 @@ def myMMR(message, roles):
 
 # if added a mention
   else:
-    permissions = ['admin', 'nmcmanager', 'developer', 'moderator']
-    if (any(role in permissions for role in roles) or message.author.id == 772847165550755900):
+    permissions = ['admin', 'nmcmanager', 'developer', 'moderator', 'coach']
+    if (any(role in permissions for role in roles) or message.author.id == 772847165550755900 or message.author.id == 789023396733255680):
       mention = message.content.split(" ", 1)[1]
       if(len(list(filter(lambda x : x.name.lower() == "nmc scholar", message.mentions[0].roles)))>0):
         ronin=getGuildMentionScholarRonin(message.mentions[0].id)

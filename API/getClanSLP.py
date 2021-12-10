@@ -31,7 +31,9 @@ def getClanSLP(clan):
 	clanSlpToday = 0
 	clanSlpYtd = 0
 	clanFee = 0
-
+	embed_list = []
+	embed_count = 0
+  
 	try:
 		for user in roninAddDb:
     #get 0x
@@ -59,14 +61,22 @@ def getClanSLP(clan):
 				totalSlp = json_data['slp']['total']
 				mmr = json_data['leaderboard']['elo']
 				clanScholar += 1
-				clanSlp += totalSlp
-				clanSlpToday += todaySlp
-				clanSlpYtd += ytdSlp
-				clanFee = math.ceil(0.05*totalSlp)
-
+				if totalSlp != None : clanSlp += totalSlp
+				if todaySlp != None : clanSlpToday += todaySlp
+				if ytdSlp != None : clanSlpYtd += ytdSlp
+				embed_count += 1
+				if(embed_count==25):
+						print('start new list')
+						embed_count = 0
+						embed_list.append(embed)
+						embed = discord.Embed(title = clan.capitalize() +  " clan's Daily Updates", color = color)
+      
 			embed.add_field(name = thename, value = "Today's SLP: " + str(todaySlp) + ", Ytd SLP: " + str(ytdSlp) + ", Average SLP: " + str(avg) + ", Total SLP: " + str(totalSlp) + ", MMR: " + str(mmr) ,inline=False)
-
-		return embed, clanScholar, clanSlp, clanSlpToday, clanSlpYtd, clanFee
+      
+		if(len(embed_list)!=25):
+			embed_list.append(embed)
+		clanFee = math.ceil(0.05*clanSlp)
+		return embed_list, clanScholar, clanSlp, clanSlpToday, clanSlpYtd, clanFee
 	except:
 		embed=discord.Embed(title="Oops!", color = discord.Color.light_gray())
 		embed.add_field(name="Error", value=sys.exc_info()[0])
