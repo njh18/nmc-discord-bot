@@ -49,26 +49,28 @@ pp = pprint.PrettyPrinter()
 # filtersDb = json.load(open("Database-filters.json"))
 # db.set_bulk({"roninAdd":roninDb["roninAdd"],"filters":filtersDb["filters"]})
 
+################### TURNED OFF TEMPORARILY #######################
 ## Bot-testing channel ID
 ## use https://crontab.guru/ to
-@aiocron.crontab('*/30 * * * *')
-async def cronjob1():
-  channel, embed = cronJobNumber1(client)
-  print("end of cronjob1")
-  await channel.send(embed=embed)
+# @aiocron.crontab('*/30 * * * *')
+# async def cronjob1():
+#   channel, embed = cronJobNumber1(client)
+#   print("end of cronjob1")
+#   await channel.send(embed=embed)
 # await channel.send('This message is sent every 10 minutes')
 
 # “At 8PM in UTC / 4PM SGT”
 CHANNEL_ID = 899694611541409835
 
-@aiocron.crontab('00 20 * * *')
-async def cronjob2():
-    print("Running cronjob2")
-    for clan in json.loads(db.get_raw("roninAdd")):
-        if clan != "singapore":
-            channel = client.get_channel(905898436883275816)
-            await channel.send("Retrieving Clan Info!")
-            await channel.send(embed=getClanSLP(clan))
+################## TODO : Not working - PLS Fix #################
+# @aiocron.crontab('00 20 * * *')
+# async def cronjob2():
+#     print("Running cronjob2")
+#     for clan in json.loads(db.get_raw("roninAdd")):
+#         if clan != "singapore":
+#             channel = client.get_channel(905898436883275816)
+#             await channel.send("Retrieving Clan Info!")
+#             await channel.send(embed=getClanSLP(clan))
 
 # when bot is ready to be use
 @client.event
@@ -170,7 +172,7 @@ async def on_message(message):
 
     #Get SLP for entire Clan
     elif msg.startswith("$clanslp"):
-        permissions = ['admin', 'nmcmanager', 'developer', 'moderator']
+        permissions = ['admin', 'nmcmanager', 'developer', 'staff']
         if (not any(role in permissions for role in roles)):
             return
         clan = msg.split("$clanslp ", 1)[1]
@@ -189,7 +191,7 @@ async def on_message(message):
     #Get SLP for entire Clan
     elif msg.startswith("$guildavgslp"):
         print(roles)
-        permissions = ['admin', 'nmcmanager', 'developer', 'moderator','junior moderator']
+        permissions = ['admin', 'nmcmanager', 'developer', 'staff','coach']
         if (not any(role in permissions for role in roles)):
             return
         min_slp = msg.split("$guildavgslp ", 1)[1]

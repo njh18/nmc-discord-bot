@@ -11,10 +11,10 @@ def getRole(message):
   if (nmcmanager == True):
     roles.append("nmcmanager")  
 
-  moderator = lambda x : True if "moderator" in [y.name.lower() for y in message.author.roles] else False
+  moderator = lambda x : True if "staff" in [y.name.lower() for y in message.author.roles] else False
   moderator = moderator(message)
   if (moderator == True):
-    roles.append("moderator")
+    roles.append("staff")
 
   coach = lambda x : True if "coach" in [y.name.lower() for y in message.author.roles] else False
   coach = coach(message)
@@ -31,9 +31,9 @@ def getRole(message):
   if (admin == True):
     roles.append("admin")
 
-  juniormod = lambda x : True if "junior moderator" in [y.name.lower() for y in message.author.roles] else False
+  juniormod = lambda x : True if "moderator" in [y.name.lower() for y in message.author.roles] else False
   juniormod = juniormod(message)
   if (juniormod == True):
-    roles.append("junior moderator")
+    roles.append("moderator")
 
   return roles
