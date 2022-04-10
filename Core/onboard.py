@@ -8,11 +8,57 @@ async def onboard(message, roles, client):
   if (any(role in permissions for role in roles)):
       if (len(message.content.split(" ", 1)) == 1):
           await message.channel.send(
-              "Can mention him/her after \'$onboard\'?")
+              "Incorrect onboarding command. Please mention the scholar after \'$onboard\'")
       else:
           mention = message.content.split(" ", 1)[1].replace('@', '').replace(
               '<', '').replace('>', '').replace('!', '')
           print(mention)
+
+        # Check Name
+        
+          # embed = discord.Embed(title="Please input the scholar's name",
+          #                       color=0x66a1a5)
+          # message3 = await message.channel.send(embed=embed)
+
+          # max_timer = 30
+          # check_timer = 0
+        
+          # scholarname = 0
+          # while (check_timer < max_timer):
+          #     print('waiting for scholar name')
+          #     # await asyncio.sleep(5)
+          #     try:
+          #         msg2 = await client.wait_for('message', timeout=5)
+          #     except:
+          #         print('waited 5s for scholar name')
+          #         check_timer += 5
+          #         print(check_timer)
+          #         continue
+          #     print(msg2.content)
+          #     message2fetch = msg2.content
+          #     # message2fetch = await message.channel.fetch_message(message2)
+
+          #     print(check_timer)
+          # if (scholarname == 0):
+          #     message1 = await message.channel.send(
+          #         'No input received. Timing out.'
+          #     )
+          #     return
+          # else:
+          #     print("clan : " + clan)
+          #     print("ronin : " + str(ronin))
+          #     new_scholar = {
+          #         "userId": int(mention),
+          #         "managerShare": 5,
+          #         "eth": "",
+          #         "name": str(message.mentions[0].name),
+          #         "scholarRonin": ronin,
+          #         "investorPercentage": "",
+          #         "investorRonin": ""
+          #     }
+
+          # Check Name End
+          # Check Clan
 
           clan_emojis = [
               '\N{Palm Tree}', '\N{Last Quarter Moon with Face}',
@@ -25,9 +71,7 @@ async def onboard(message, roles, client):
               'sol',
           ]
 
-          # Check Clan
-
-          embed = discord.Embed(title="This paikia what clan one?",
+          embed = discord.Embed(title="Please react to the clan you wish to onboard this scholar to.",
                                 color=0x66a1a5)
           message1 = await message.channel.send(embed=embed)
           for emoji in clan_emojis:
@@ -65,7 +109,7 @@ async def onboard(message, roles, client):
 # Check Clan End
 # Check Ronin
 
-          embed = discord.Embed(title="Can paste ronin pls",
+          embed = discord.Embed(title="Please input the scholar's GAME ACCOUNT ronin (not his/her own)",
                                 color=0x66a1a5)
           message2 = await message.channel.send(embed=embed)
 
@@ -95,13 +139,13 @@ async def onboard(message, roles, client):
                   break
               else:
                   await message.channel.send(
-                      'Eh wrong format. Paste again.')
+                      'This is not an acceptable ronin format. Ronin wallet starts with \'0x\' or \'ronin:\'')
                   check_timer = 0
                   print('timer reset')
               print(check_timer)
           if (ronin == 0):
               message1 = await message.channel.send(
-                  'Eh you don\'t know how to talk is it? Sorry hor go try from beginning - \'$onboard\' again.'
+                  'No input received. Timing out.'
               )
               return
           else:
@@ -116,7 +160,7 @@ async def onboard(message, roles, client):
                   "investorPercentage": "",
                   "investorRonin": ""
               }
-
+            
           confirm_emojis = [
               '\N{White Heavy Check Mark}', '\N{Cross Mark}'
           ]

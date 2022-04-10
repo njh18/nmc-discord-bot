@@ -33,8 +33,9 @@ def getDailySLP(roninAdd):
       # print(yesterday)
       # ytd = "Yesterday" + date.yesterday().strftime("%b-%d")
       random_pic_index = randint(0,len(img_list)-1)
+      print(json_data['leaderboard'])
+      embed.add_field(name = thename, value = json_data['leaderboard']['name'], inline=False)
     
-      embed.add_field(name =  "Average SLP", value = avgSlp,inline=True)
       embed.add_field(name = "⠀", value = "⠀",inline=True)
       embed.add_field(name =  "Total SLP", value = totalSlp,inline=True)
       embed.add_field(name = today, value = todaySlp,inline=True)

@@ -50,7 +50,7 @@ def getClanSLP(clan):
 
 			json_data = json.loads(response.text)
 			print(json_data)
-			thename = json_data['leaderboard']['name']
+			thename = user['name']
 
 			if thename is None:
 				break 
@@ -70,8 +70,8 @@ def getClanSLP(clan):
 						embed_count = 0
 						embed_list.append(embed)
 						embed = discord.Embed(title = clan.capitalize() +  " clan's Daily Updates", color = color)
-      
-			embed.add_field(name = thename, value = "Today's SLP: " + str(todaySlp) + ", Ytd SLP: " + str(ytdSlp) + ", Average SLP: " + str(avg) + ", Total SLP: " + str(totalSlp) + ", MMR: " + str(mmr) ,inline=False)
+			myValue = "Today's SLP: " + str(todaySlp) + ", Ytd SLP: " + str(ytdSlp) + ", Average SLP: " + str(avg) + ", Total SLP: " + str(totalSlp) + ", MMR: " + str(mmr)
+			embed.add_field(name = thename, value = myValue ,inline=False)
       
 		if(len(embed_list)!=25):
 			embed_list.append(embed)
