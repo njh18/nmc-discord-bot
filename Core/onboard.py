@@ -2,6 +2,7 @@ import discord
 import asyncio
 import json
 from Builder.roninAddConverter import roninAddConverter
+from Core.dbUpdate import dbUpdate
 
 async def onboard(message, roles, client): 
   permissions = ['admin', 'nmcmanager', 'developer']

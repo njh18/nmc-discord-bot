@@ -1,6 +1,7 @@
 import discord
 import json
 import asyncio
+from Core.dbUpdate import dbUpdate
 
 async def offboard(message, roles):
   permissions = ['admin', 'nmcmanager', 'developer']

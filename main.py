@@ -237,9 +237,11 @@ async def on_message(message):
 
     elif msg.startswith('$onboard'):
       asyncio.get_event_loop().create_task(onboard(message, roles, client))
+      dbUpdate(roles)
 
     elif msg.startswith('$offboard'):
       asyncio.get_event_loop().create_task(offboard(message, roles))
+      dbUpdate(roles)
 
     elif msg.startswith("$leaderboard"):
       asyncio.get_event_loop().create_task(leaderboard(message))
