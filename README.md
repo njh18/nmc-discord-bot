@@ -36,23 +36,27 @@ Join our [Discord](https://discord.gg/cpPtxMRct3)!
 #### Admin / Manager Commands 🗃️
 * `$myslp <@user>`: Get SLP earnings information of tagged user 
 * `$clanslp <Lunar/Sol/Kopi/Oasis>`: Get entire clan's slp & mmr 
+* `$guildavgslp`: Get list of players who has less than average daily 150 $SLP earned
 * `$onboard <@user>`: Follow process to upload user to database
 * `$dbupdate`: Database update (to run after onboarding)
 * `$leaderboard <rank,axieCount>`: Get axies used by leaderboard
 
 ### Example <a name="example"></a>
 
-| Command            | Screenshot                                    |
-|--------------------|-----------------------------------------------|
-| `$myaxie`          | <img src="images/commands/myaxie.png" width="200"/> |
+| Command            | Screenshot                                               |
+|--------------------|----------------------------------------------------------|
+| `$myaxie`          | <img src="images/commands/myaxie.png" width="200"/>      |
 | `$myaxie <@user>`  | <img src="images/commands/myaxie-user.png" width="200"/> |
-| `$mymmr`          | <img src="images/commands/mymmr.png" width="200"/> |
-| `$myslp`          | <img src="images/commands/myslp.png" width="200"/> |
-| `$myslp <@user>`  | <img src="images/commands/myslp-user.png" width="200"/> |
-| `$myronin`  | <img src="images/commands/myronin.png" width="200"/> |
-| `$priceslp`  | <img src="images/commands/priceslp.png" width="200"/> |
-| `$priceeth`  | <img src="images/commands/priceeth.png" width="200"/> |
-| `$onboard <@user>`  | <img src="images/commands/onboard.png" width="200"/> |
+| `$mymmr`           | <img src="images/commands/mymmr.png" width="200"/>       |
+| `$myslp`           | <img src="images/commands/myslp.png" width="200"/>       |
+| `$myslp <@user>`   | <img src="images/commands/myslp-user.png" width="200"/>  |
+| `$myronin`         | <img src="images/commands/myronin.png" width="200"/>     |
+| `$priceslp <amt>`  | <img src="images/commands/priceslp.png" width="200"/>    |
+| `$priceeth <amt>`  | <img src="images/commands/priceeth.png" width="200"/>    |
+| `$pricesgd <amt>`  | <img src="images/commands/pricesgd.png" width="200"/>    |
+| `$onboard`         | <img src="images/commands/onboard.png" width="200"/>     |
+| `$clanslp`         | <img src="images/commands/clanslp.png" width="200"/>     |
+| `$guildavgslp`     | <img src="images/commands/guildavgslp.png" width="200"/> |
 
 ## Usage
 Simply type the desired command in the Discord server's chat and the bot will respond accordingly with the requested information.
